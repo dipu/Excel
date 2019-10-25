@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Dipu.Excel.IAddIn">
+    <Position X="4.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>IAddIn.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Workbooks" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Dipu.Excel.IWorkbook">
+    <Position X="7" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>IWorkbook.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Worksheets" />
+    </ShowAsCollectionAssociation>
+  </Interface>
+  <Interface Name="Dipu.Excel.IWorksheet">
+    <Position X="10" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IWorksheet.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Dipu.Excel.IProgram">
+    <Position X="1" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAgAAAAAAEIAAAAAAAA=</HashCode>
+      <FileName>IProgram.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
