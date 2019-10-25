@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Application;
+using Microsoft.Office.Interop.Excel;
 using Action = System.Action;
 using InteropApplication = Microsoft.Office.Interop.Excel.Application;
 using InteropWorkbook = Microsoft.Office.Interop.Excel.Workbook;
@@ -10,18 +13,53 @@ namespace Dipu.Excel.Embedded
     public class AddIn : IAddIn
     {
         private readonly Dictionary<string, Action> handlerByAction;
-        private readonly Dictionary<ComWrapper<InteropWorkbook>, Workbook> workbookByInteropWorkbook;
+        private readonly Dictionary<InteropWorkbook, Workbook> workbookByInteropWorkbook;
 
-        public AddIn(InteropApplication application)
+        public AddIn(InteropApplication application, IProgram program)
         {
             this.Application = application;
+            this.Program = program;
             this.handlerByAction = new Dictionary<string, Action>();
-            this.workbookByInteropWorkbook = new Dictionary<ComWrapper<InteropWorkbook>, Workbook>();
+            this.workbookByInteropWorkbook = new Dictionary<InteropWorkbook, Workbook>();
+
+            ((AppEvents_Event)this.Application).NewWorkbook += async interopWorkbook =>
+            {
+                var workbook = this.New(interopWorkbook);
+                for (var i = 1; i <= interopWorkbook.Worksheets.Count; i++)
+                {
+                    var interopWorksheet = (InteropWorksheet)interopWorkbook.Worksheets[i];
+                    workbook.New(interopWorksheet);
+                }
+
+                var worksheets = workbook.Worksheets;
+                await this.Program.OnNew(workbook);
+                foreach (var worksheet in worksheets)
+                {
+                    await program.OnNew(worksheet);
+                }
+            };
+
+            void WorkbookBeforeClose(InteropWorkbook interopWorkbook, ref bool cancel)
+            {
+                if (this.WorkbookByInteropWorkbook.TryGetValue(interopWorkbook, out var workbook))
+                {
+                    this.Program.OnClose(workbook, ref cancel);
+                    if (!cancel)
+                    {
+                        this.Close(interopWorkbook);
+                    }
+                }
+            }
+
+            this.Application.WorkbookBeforeClose += WorkbookBeforeClose;
+
         }
 
         public InteropApplication Application { get; }
 
-        public IReadOnlyDictionary<ComWrapper<InteropWorkbook>, Workbook> WorkbookByInteropWorkbook => workbookByInteropWorkbook;
+        public IProgram Program { get; }
+
+        public IReadOnlyDictionary<InteropWorkbook, Workbook> WorkbookByInteropWorkbook => workbookByInteropWorkbook;
 
         public void Register(string action, Action handler)
         {
@@ -38,7 +76,7 @@ namespace Dipu.Excel.Embedded
             }
         }
 
-        public Workbook New(ComWrapper<InteropWorkbook> interopWorkbook)
+        public Workbook New(InteropWorkbook interopWorkbook)
         {
             if (!this.workbookByInteropWorkbook.TryGetValue(interopWorkbook, out var workbook))
             {
@@ -49,7 +87,7 @@ namespace Dipu.Excel.Embedded
             return workbook;
         }
 
-        public void Close(ComWrapper<InteropWorkbook> interopWorkbook)
+        public void Close(InteropWorkbook interopWorkbook)
         {
             this.workbookByInteropWorkbook.Remove(interopWorkbook);
         }

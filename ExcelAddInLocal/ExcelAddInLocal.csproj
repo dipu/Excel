@@ -159,9 +159,6 @@
     <Compile Include="..\Dipu.Excel.Embedded\AddIn.cs">
       <Link>Dipu.Excel.Embedded\AddIn.cs</Link>
     </Compile>
-    <Compile Include="..\Dipu.Excel.Embedded\ComWrapper.cs">
-      <Link>Dipu.Excel.Embedded\ComWrapper.cs</Link>
-    </Compile>
     <Compile Include="..\Dipu.Excel.Embedded\Workbook.cs">
       <Link>Dipu.Excel.Embedded\Workbook.cs</Link>
     </Compile>

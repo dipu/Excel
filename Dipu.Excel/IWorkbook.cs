@@ -6,6 +6,8 @@ namespace Dipu.Excel
     {
         IWorksheet CreateSheet(int? index = null, IWorksheet before = null, IWorksheet after = null);
 
-        IWorksheet[] Worksheets { get; } 
+        IWorksheet[] Worksheets { get; }
+
+        void Close(bool? saveChanges = null, string fileName = null);
     }
 }
