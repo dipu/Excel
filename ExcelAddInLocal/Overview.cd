@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Dipu.Excel.Embedded.AddIn">
+    <Position X="4.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAABAAACAAAAAAABAAABABAAIIAIAAAACAAAA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\excel\Dipu.Excel.Embedded\AddIn.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Dipu.Excel.Embedded.Workbook">
+    <Position X="7" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAEgAAAAAAQAAASAEAA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\excel\Dipu.Excel.Embedded\Workbook.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Dipu.Excel.Embedded.Worksheet">
+    <Position X="10" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAgAIAAEAAAAAAAA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\excel\Dipu.Excel.Embedded\Worksheet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Application.Program">
+    <Position X="1" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Dipu.Excel.IAddIn">
+    <Position X="4.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="Workbooks" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Dipu.Excel.IWorkbook">
+    <Position X="7" Y="1.25" Width="1.5" />
+    <TypeIdentifier />
+    <ShowAsCollectionAssociation>
+      <Property Name="Worksheets" />
+    </ShowAsCollectionAssociation>
+  </Interface>
+  <Interface Name="Dipu.Excel.IWorksheet">
+    <Position X="10" Y="1.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Dipu.Excel.IProgram">
+    <Position X="1" Y="1.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,7 +1,11 @@
-﻿using System.Windows.Forms;
+﻿using System.Collections.Generic;
+using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
+using Dipu.Excel.Rendering;
 
 namespace Application
 {
+    using System.Drawing;
     using System.Threading.Tasks;
     using Dipu.Excel;
 
@@ -24,6 +28,17 @@ namespace Application
         {
             var sheet = workbook.CreateSheet();
             sheet.Name = "2";
+            
+            var cells = new List<CellValue>();
+            for (var i = 0; i < 10 * 1000; i++)
+            {
+                for (var j = 0; j < 300; j++)
+                {
+                    cells.Add(new CellValue(i, j, $"'{i},{j}"));
+                }
+            }
+
+            sheet.Render(cells);
         }
 
         public void OnClose(IWorkbook workbook, ref bool cancel)

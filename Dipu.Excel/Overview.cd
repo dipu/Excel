@@ -1,5 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Dipu.Excel.RenderBatch">
+    <Position X="12.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RenderBatch.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="cells" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Dipu.Excel.CellRenderer">
+    <Position X="16.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>CellRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Interface Name="Dipu.Excel.IAddIn">
     <Position X="4.25" Y="1.25" Width="1.5" />
     <TypeIdentifier>
@@ -13,7 +30,7 @@
   <Interface Name="Dipu.Excel.IWorkbook">
     <Position X="7" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAEAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAACAEAA=</HashCode>
       <FileName>IWorkbook.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -23,7 +40,7 @@
   <Interface Name="Dipu.Excel.IWorksheet">
     <Position X="10" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IWorksheet.cs</FileName>
     </TypeIdentifier>
   </Interface>
