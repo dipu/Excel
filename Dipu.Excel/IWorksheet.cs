@@ -1,12 +1,19 @@
-﻿using System.Collections.Generic;
-using Dipu.Excel.Rendering;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Dipu.Excel
 {
     public interface IWorksheet
     {
+        event EventHandler<CellChangedEvent> CellChanged;
+
         string Name { get; set; }
 
-        void Render(IEnumerable<CellValue> cellValues);
+        ICell this[int row, int column]
+        {
+            get;
+        }
+
+        Task Flush();
     }
 }

@@ -1,17 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace Dipu.Excel.Rendering
+namespace Dipu.Excel.Embedded
 {
-    public static class CellValues
+    public static class Cells
     {
-        public static IEnumerable<IList<IList<CellValue>>> Chunks(this IEnumerable<CellValue> @this)
+        public static IEnumerable<IList<IList<Cell>>> Chunks(this IEnumerable<Cell> @this, Func<Cell, Cell, bool> combine)
         {
             return @this
                 .GroupBy(v => v.Row)
                 .SelectMany(v =>
                 {
-                    return v.OrderBy(w => w.Column).Aggregate(new List<IList<CellValue>> {new List<CellValue>()},
+                    return v.OrderBy(w => w.Column).Aggregate(new List<IList<Cell>> { new List<Cell>() },
                         (acc, w) =>
                         {
                             var list = acc[acc.Count - 1];
@@ -21,7 +22,7 @@ namespace Dipu.Excel.Rendering
                             }
                             else
                             {
-                                list = new List<CellValue> {w};
+                                list = new List<Cell> { w };
                                 acc.Add(list);
                             }
 
@@ -32,7 +33,7 @@ namespace Dipu.Excel.Rendering
                 .SelectMany(v =>
                 {
                     return v.OrderBy(w => w[0].Row).Aggregate(
-                        new List<IList<IList<CellValue>>> {new List<IList<CellValue>>()},
+                        new List<IList<IList<Cell>>> { new List<IList<Cell>>() },
                         (acc, w) =>
                         {
                             var list = acc[acc.Count - 1];
@@ -42,7 +43,7 @@ namespace Dipu.Excel.Rendering
                             }
                             else
                             {
-                                list = new List<IList<CellValue>> {w};
+                                list = new List<IList<Cell>> { w };
                                 acc.Add(list);
                             }
 

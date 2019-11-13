@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-using Dipu.Excel.Rendering;
+﻿using System.Windows.Forms;
 
 namespace Application
 {
@@ -26,19 +23,29 @@ namespace Application
 
         public async Task OnNew(IWorkbook workbook)
         {
+            var style = new Style(Color.Aqua, Color.Blue);
+
             var sheet = workbook.CreateSheet();
             sheet.Name = "2";
-            
-            var cells = new List<CellValue>();
-            for (var i = 0; i < 10 * 1000; i++)
+            sheet.CellChanged += (sender, v) => { MessageBox.Show($"{v.Row}:{v.Column}");};
+
+            for (var i = 0; i < 100; i++)
             {
-                for (var j = 0; j < 300; j++)
+                for (var j = 0; j < 10; j++)
                 {
-                    cells.Add(new CellValue(i, j, $"'{i},{j}"));
+                    sheet[i, j].Value = $"{i},{j}";
+                    if (j == 0 || j == 2)
+                    {
+                        sheet[i, j].Style = style;
+                    }
                 }
             }
 
-            sheet.Render(cells);
+            await sheet.Flush();
+
+            sheet[0, 0].Value = "Whoppa!";
+
+            await sheet.Flush();
         }
 
         public void OnClose(IWorkbook workbook, ref bool cancel)

@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Dipu.Excel.Rendering;
+﻿using Dipu.Excel.Embedded;
 using Xunit;
+using System.Linq;
 
 namespace Dipu.Excel.Tests.Embedded
 {
@@ -10,41 +9,41 @@ namespace Dipu.Excel.Tests.Embedded
         [Fact]
         public void OneChunk_OneRow_TwoCells()
         {
-            var cellValues = new[]
+            var cells = new[]
             {
-                new CellValue(0, 0, "0,0"),
-                new CellValue(0, 1, "0,1"),
+                new Cell(null, 0, 0),
+                new Cell(null, 0, 1),
             };
 
-            var chunks = cellValues.Chunks().ToArray();
+            var chunks = cells.Chunks((v, w) => true).ToArray();
             Assert.Single(chunks);
         }
 
         [Fact]
         public void OneChunk_OneRow_FourCells()
         {
-            var cellValues = new[]
+            var cells = new[]
                 {
-                    new CellValue(0,0,"0,0"),
-                    new CellValue(0,1,"0,1"),
-                    new CellValue(0,2,"0,2"),
-                    new CellValue(0,3,"0,3"),
+                    new Cell(null, 0,0),
+                    new Cell(null, 0,1),
+                    new Cell(null, 0,2),
+                    new Cell(null, 0,3),
             };
 
-            var chunks = cellValues.Chunks().ToArray();
+            var chunks = cells.Chunks((v, w) => true).ToArray();
             Assert.Single(chunks);
         }
 
         [Fact]
         public void OneChunk_TwoRows_OneCell()
         {
-            var batch = new[]
+            var cells = new[]
                 {
-                    new CellValue(0,0,"0,0"),
-                    new CellValue(1,0,"1,0"),
+                    new Cell(null, 0,0),
+                    new Cell(null, 1,0),
             };
 
-            var chunks = batch.Chunks().ToArray();
+            var chunks = cells.Chunks((v, w) => true).ToArray();
             Assert.Single(chunks);
         }
 
@@ -52,15 +51,15 @@ namespace Dipu.Excel.Tests.Embedded
         [Fact]
         public void OneChunk_TwoRows_TwoCells()
         {
-            var cellValues = new[]
+            var cells = new[]
                 {
-                    new CellValue(0,0,"0,0"),
-                    new CellValue(0,1,"0,1"),
-                    new CellValue(1,0,"1,0"),
-                    new CellValue(1,1,"1,1"),
+                    new Cell(null, 0,0),
+                    new Cell(null,0,1),
+                    new Cell(null,1,0),
+                    new Cell(null,1,1),
             };
 
-            var chunks = cellValues.Chunks().ToArray();
+            var chunks = cells.Chunks((v, w) => true).ToArray();
             Assert.Single(chunks);
         }
 
@@ -68,15 +67,15 @@ namespace Dipu.Excel.Tests.Embedded
         [Fact]
         public void TwoChunks_OneRow_TwoCells()
         {
-            var cellValues = new[]
+            var cells = new[]
                 {
-                    new CellValue(0,0,"0,0"),
-                    new CellValue(0,1,"0,1"),
-                    new CellValue(0,3,"0,3"),
-                    new CellValue(0,4,"0,4"),
+                    new Cell(null, 0,0),
+                    new Cell(null, 0,1),
+                    new Cell(null, 0,3),
+                    new Cell(null,0,4),
             };
 
-            var chunks = cellValues.Chunks().ToArray();
+            var chunks = cells.Chunks((v, w) => true).ToArray();
             Assert.Equal(2, chunks.Length);
         }
     }

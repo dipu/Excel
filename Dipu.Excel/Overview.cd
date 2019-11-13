@@ -1,22 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Dipu.Excel.RenderBatch">
-    <Position X="12.75" Y="1.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>RenderBatch.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Property Name="cells" />
-    </ShowAsCollectionAssociation>
-  </Class>
-  <Class Name="Dipu.Excel.CellRenderer">
-    <Position X="16.25" Y="1.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
-      <FileName>CellRenderer.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Interface Name="Dipu.Excel.IAddIn">
     <Position X="4.25" Y="1.25" Width="1.5" />
     <TypeIdentifier>
@@ -40,12 +23,23 @@
   <Interface Name="Dipu.Excel.IWorksheet">
     <Position X="10" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAgAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAQAAAAAAAAAABAAAAAAAAA=</HashCode>
       <FileName>IWorksheet.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="this[System.Int32, System.Int32]" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Dipu.Excel.ICell">
+    <Position X="13" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAABAAA=</HashCode>
+      <FileName>ICell.cs</FileName>
+      <NewMemberFileName>IProgram.cs</NewMemberFileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Dipu.Excel.IProgram">
-    <Position X="1" Y="1.25" Width="1.5" />
+    <Position X="1.25" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAgAAAAAAEIAAAAAAAA=</HashCode>
       <FileName>IProgram.cs</FileName>
