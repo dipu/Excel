@@ -1,9 +1,12 @@
-﻿namespace Dipu.Excel.Embedded
+﻿using System;
+
+namespace Dipu.Excel.Embedded
 {
     public class Cell : ICell
     {
         private object value;
         private Style style;
+        private string numberFormat;
 
         public Cell(Worksheet worksheet, int row, int column)
         {
@@ -50,9 +53,35 @@
                 }
             }
         }
-        
+
+        public string NumberFormat
+        {
+            get => numberFormat;
+            set
+            {
+                if (!Equals(this.numberFormat, value))
+                {
+                    this.numberFormat = value;
+                    this.Worksheet.AddDirtyNumberFormat(this);
+                }
+            }
+        }
+
         public bool UpdateValue(object newValue)
         {
+            if (this.value is decimal @decimal && newValue is double @double)
+            {
+                const double decimalMin = (double)decimal.MinValue;
+                const double decimalMax = (double)decimal.MaxValue;
+
+                if (@double < decimalMin || @double > decimalMax)
+                {
+                    return true;
+                }
+
+                return ((decimal)@double).CompareTo(@decimal) != 0;
+            }
+
             if (!Equals(this.value, newValue))
             {
                 this.value = newValue;

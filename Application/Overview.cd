@@ -8,6 +8,10 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
+  <Class Name="Dipu.Excel.Style">
+    <Position X="15.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
   <Interface Name="Dipu.Excel.IAddIn">
     <Position X="4.25" Y="1.25" Width="1.5" />
     <TypeIdentifier />
@@ -29,6 +33,13 @@
   <Interface Name="Dipu.Excel.IProgram">
     <Position X="1" Y="1.25" Width="1.5" />
     <TypeIdentifier />
+  </Interface>
+  <Interface Name="Dipu.Excel.ICell">
+    <Position X="13" Y="1.25" Width="1.5" />
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="Worksheet" />
+    </ShowAsAssociation>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

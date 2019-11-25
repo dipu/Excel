@@ -76,7 +76,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Embedded\WorkbookTests.cs" />
-    <Compile Include="Rendering\BatchTests.cs" />
+    <Compile Include="Rendering\ChunkTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

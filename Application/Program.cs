@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Linq;
+using System.Windows.Forms;
 
 namespace Application
 {
@@ -27,16 +28,17 @@ namespace Application
 
             var sheet = workbook.CreateSheet();
             sheet.Name = "2";
-            sheet.CellChanged += (sender, v) => { MessageBox.Show($"{v.Row}:{v.Column}");};
+            sheet.CellChanged += (sender, v) => { MessageBox.Show($"Cells changed: {string.Join(",", v.Cells.Select(w => $"{w.Row}:{w.Column}"))}"); };
 
             for (var i = 0; i < 100; i++)
             {
                 for (var j = 0; j < 10; j++)
                 {
-                    sheet[i, j].Value = $"{i},{j}";
+                    sheet[i, j].Value = decimal.Parse($"{i},{j}");
                     if (j == 0 || j == 2)
                     {
                         sheet[i, j].Style = style;
+                        sheet[i, j].NumberFormat = "#.###,00";
                     }
                 }
             }

@@ -4,14 +4,11 @@ namespace Dipu.Excel
 {
     public class CellChangedEvent : EventArgs
     {
-        public CellChangedEvent(int row, int column)
+        public ICell[] Cells { get; }
+
+        public CellChangedEvent(ICell[] cells)
         {
-            Row = row;
-            Column = column;
+            Cells = cells;
         }
-
-        public int Row { get; }
-
-        public int Column { get; }
     }
 }

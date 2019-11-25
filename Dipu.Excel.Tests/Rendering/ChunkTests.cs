@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Dipu.Excel.Tests.Embedded
 {
-    public class BatchTests
+    public class ChunkTests
     {
         [Fact]
         public void OneChunk_OneRow_TwoCells()

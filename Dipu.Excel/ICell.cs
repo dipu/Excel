@@ -11,5 +11,7 @@
         object Value { get; set; }
 
         Style Style { get; set; }
+
+        string NumberFormat { get; set; }
     }
 }

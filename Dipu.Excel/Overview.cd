@@ -1,5 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Dipu.Excel.Style">
+    <Position X="15.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Style.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Interface Name="Dipu.Excel.IAddIn">
     <Position X="4.25" Y="1.25" Width="1.5" />
     <TypeIdentifier>
@@ -23,7 +30,7 @@
   <Interface Name="Dipu.Excel.IWorksheet">
     <Position X="10" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAACAAAAAQAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAACAAACAQAAAAAAAAAAAAAAAAIAAA=</HashCode>
       <FileName>IWorksheet.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -33,7 +40,7 @@
   <Interface Name="Dipu.Excel.ICell">
     <Position X="13" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAABAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAABAAAAAgAABAAgAAAAAAA=</HashCode>
       <FileName>ICell.cs</FileName>
       <NewMemberFileName>IProgram.cs</NewMemberFileName>
     </TypeIdentifier>

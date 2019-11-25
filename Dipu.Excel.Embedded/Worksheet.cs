@@ -16,6 +16,8 @@ namespace Dipu.Excel.Embedded
 
         private HashSet<Cell> DirtyStyleCells { get; set; }
 
+        private HashSet<Cell> DirtyNumberFormatCells { get; set; }
+
         public Worksheet(Workbook workbook, InteropWorksheet interopWorksheet)
         {
             this.Workbook = workbook;
@@ -23,12 +25,14 @@ namespace Dipu.Excel.Embedded
             this.CellByRowColumn = new Dictionary<string, Cell>();
             this.DirtyValueCells = new HashSet<Cell>();
             this.DirtyStyleCells = new HashSet<Cell>();
+            this.DirtyNumberFormatCells = new HashSet<Cell>();
 
             interopWorksheet.Change += InteropWorksheet_Change;
         }
 
         private void InteropWorksheet_Change(Range target)
         {
+            List<Cell> cells = null;
             foreach (Range targetCell in target.Cells)
             {
                 var row = targetCell.Row - 1;
@@ -37,8 +41,18 @@ namespace Dipu.Excel.Embedded
 
                 if (cell.UpdateValue(targetCell.Value2))
                 {
-                    this.CellChanged?.Invoke(this, new CellChangedEvent(row, column));
+                    if (cells == null)
+                    {
+                        cells = new List<Cell>();
+                    }
+
+                    cells.Add(cell);
                 }
+            }
+
+            if (cells != null)
+            {
+                this.CellChanged?.Invoke(this, new CellChangedEvent(cells.Cast<ICell>().ToArray()));
             }
         }
 
@@ -67,6 +81,9 @@ namespace Dipu.Excel.Embedded
 
         public async Task Flush()
         {
+            this.RenderNumberFormat(this.DirtyNumberFormatCells);
+            this.DirtyNumberFormatCells = new HashSet<Cell>();
+
             this.RenderValue(this.DirtyValueCells);
             this.DirtyValueCells = new HashSet<Cell>();
 
@@ -118,7 +135,30 @@ namespace Dipu.Excel.Embedded
             }
         }
 
+        public void RenderNumberFormat(IEnumerable<Cell> cells)
+        {
+            foreach (var chunk in cells.Chunks((v, w) => Equals(v.NumberFormat, w.NumberFormat)))
+            {
+                var fromRow = chunk.First().First().Row;
+                var fromColumn = chunk.First().First().Column;
+
+                var toRow = chunk.Last().Last().Row;
+                var toColumn = chunk.Last().Last().Column;
+
+                var from = this.InteropWorksheet.Cells[fromRow + 1, fromColumn + 1];
+                var to = this.InteropWorksheet.Cells[toRow + 1, toColumn + 1];
+                var range = this.InteropWorksheet.Range[from, to];
+
+                range.NumberFormat = chunk[0][0].NumberFormat;
+            }
+        }
+
         public int Index => this.InteropWorksheet.Index;
+
+        public void AddDirtyNumberFormat(Cell cell)
+        {
+            this.DirtyNumberFormatCells.Add(cell);
+        }
 
         public void AddDirtyValue(Cell cell)
         {
@@ -129,6 +169,5 @@ namespace Dipu.Excel.Embedded
         {
             this.DirtyStyleCells.Add(cell);
         }
-
     }
 }
