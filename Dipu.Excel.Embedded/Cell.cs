@@ -69,6 +69,8 @@ namespace Dipu.Excel.Embedded
 
         public bool UpdateValue(object newValue)
         {
+            bool update;
+
             if (this.value is decimal @decimal && newValue is double @double)
             {
                 const double decimalMin = (double)decimal.MinValue;
@@ -76,19 +78,24 @@ namespace Dipu.Excel.Embedded
 
                 if (@double < decimalMin || @double > decimalMax)
                 {
-                    return true;
+                    update = true;
                 }
-
-                return ((decimal)@double).CompareTo(@decimal) != 0;
+                else
+                {
+                    update = ((decimal)@double).CompareTo(@decimal) != 0;
+                }
             }
-
-            if (!Equals(this.value, newValue))
+            else
+            {
+                update = !Equals(this.value, newValue);
+            }
+            
+            if (update)
             {
                 this.value = newValue;
-                return true;
             }
 
-            return false;
+            return update;
         }
     }
 }
