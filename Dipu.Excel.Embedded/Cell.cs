@@ -1,12 +1,13 @@
-﻿using System;
-
-namespace Dipu.Excel.Embedded
+﻿namespace Dipu.Excel.Embedded
 {
     public class Cell : ICell
     {
         private object value;
         private Style style;
         private string numberFormat;
+        private IExcelValueConverter excelValueConverter;
+        private readonly IExcelValueConverter defaultExcelValueConverter = new DefaultExcelConverter();
+        private string comment;
 
         public Cell(Worksheet worksheet, int row, int column)
         {
@@ -28,7 +29,7 @@ namespace Dipu.Excel.Embedded
         public int Column { get; }
 
         object ICell.Value { get => this.Value; set => this.Value = value; }
-
+        
         public object Value
         {
             get => this.value;
@@ -37,6 +38,19 @@ namespace Dipu.Excel.Embedded
                 if (this.UpdateValue(value))
                 {
                     this.Worksheet.AddDirtyValue(this);
+                }
+            }
+        }
+
+        public string Comment
+        {
+            get => comment;
+            set
+            {
+                if (!Equals(this.comment, value))
+                {
+                    this.comment = value;
+                    this.Worksheet.AddDirtyComment(this);
                 }
             }
         }
@@ -67,32 +81,20 @@ namespace Dipu.Excel.Embedded
             }
         }
 
-        public bool UpdateValue(object newValue)
+        public IExcelValueConverter ExcelValueConverter
         {
-            bool update;
+            get => excelValueConverter ?? this.defaultExcelValueConverter;
+            set => excelValueConverter = value;
+        }
 
-            if (this.value is decimal @decimal && newValue is double @double)
-            {
-                const double decimalMin = (double)decimal.MinValue;
-                const double decimalMax = (double)decimal.MaxValue;
+        public bool UpdateValue(object rawExcelValue)
+        {
+            var excelValue = this.ExcelValueConverter.Convert(this, rawExcelValue);
+            var update = !Equals(this.value, excelValue);
 
-                if (@double < decimalMin || @double > decimalMax)
-                {
-                    update = true;
-                }
-                else
-                {
-                    update = ((decimal)@double).CompareTo(@decimal) != 0;
-                }
-            }
-            else
-            {
-                update = !Equals(this.value, newValue);
-            }
-            
             if (update)
             {
-                this.value = newValue;
+                this.value = excelValue;
             }
 
             return update;

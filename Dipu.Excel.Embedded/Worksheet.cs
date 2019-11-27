@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Office.Interop.Excel;
 using InteropWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
@@ -14,6 +15,8 @@ namespace Dipu.Excel.Embedded
 
         private HashSet<Cell> DirtyValueCells { get; set; }
 
+        private HashSet<Cell> DirtyCommentCells { get; set; }
+
         private HashSet<Cell> DirtyStyleCells { get; set; }
 
         private HashSet<Cell> DirtyNumberFormatCells { get; set; }
@@ -24,6 +27,7 @@ namespace Dipu.Excel.Embedded
             this.InteropWorksheet = interopWorksheet;
             this.CellByRowColumn = new Dictionary<string, Cell>();
             this.DirtyValueCells = new HashSet<Cell>();
+            this.DirtyCommentCells = new HashSet<Cell>();
             this.DirtyStyleCells = new HashSet<Cell>();
             this.DirtyNumberFormatCells = new HashSet<Cell>();
 
@@ -87,6 +91,9 @@ namespace Dipu.Excel.Embedded
             this.RenderValue(this.DirtyValueCells);
             this.DirtyValueCells = new HashSet<Cell>();
 
+            this.RenderComments(this.DirtyCommentCells);
+            this.DirtyCommentCells = new HashSet<Cell>();
+
             this.RenderStyle(this.DirtyStyleCells);
             this.DirtyStyleCells = new HashSet<Cell>();
         }
@@ -114,6 +121,22 @@ namespace Dipu.Excel.Embedded
                 var to = this.InteropWorksheet.Cells[toRow + 1, toColumn + 1];
                 var range = this.InteropWorksheet.Range[from, to];
                 range.Value2 = values;
+            }
+        }
+
+        public void RenderComments(IEnumerable<Cell> cells)
+        {
+            foreach (var cell in cells)
+            {
+                Range partCell = this.InteropWorksheet.Cells[cell.Row + 1, cell.Column + 1];
+
+                if (partCell.Comment == null)
+                {
+                    partCell.AddComment();
+                    partCell.Comment.Shape.TextFrame.AutoSize = true;
+                }
+
+                partCell.Comment.Text(cell.Comment);
             }
         }
 
@@ -163,6 +186,11 @@ namespace Dipu.Excel.Embedded
         public void AddDirtyValue(Cell cell)
         {
             this.DirtyValueCells.Add(cell);
+        }
+
+        public void AddDirtyComment(Cell cell)
+        {
+            this.DirtyCommentCells.Add(cell);
         }
 
         public void AddDirtyStyle(Cell cell)

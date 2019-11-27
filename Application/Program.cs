@@ -46,6 +46,7 @@ namespace Application
             await sheet.Flush();
 
             sheet[0, 0].Value = "Whoppa!";
+            sheet[0, 0].Comment = "De Poppa!";
 
             await sheet.Flush();
         }
