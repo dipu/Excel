@@ -8,6 +8,8 @@ namespace Dipu.Excel
 
         IWorksheet[] Worksheets { get; }
 
+        bool Active { get; }
+
         void Close(bool? saveChanges = null, string fileName = null);
     }
 }

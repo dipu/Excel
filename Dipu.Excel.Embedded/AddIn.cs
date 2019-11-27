@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Allors.Excel;
 using Microsoft.Office.Interop.Excel;
 using Action = System.Action;
 using InteropApplication = Microsoft.Office.Interop.Excel.Application;
@@ -50,8 +51,17 @@ namespace Dipu.Excel.Embedded
                 }
             }
 
-            this.Application.WorkbookBeforeClose += WorkbookBeforeClose;
+            this.Application.WorkbookActivate += wb =>
+            {
+                this.WorkbookByInteropWorkbook[wb].Active = true;
+            };
 
+            this.Application.WorkbookDeactivate += wb =>
+            {
+                this.WorkbookByInteropWorkbook[wb].Active = false;
+            };
+
+            this.Application.WorkbookBeforeClose += WorkbookBeforeClose;
         }
 
         public InteropApplication Application { get; }
@@ -66,7 +76,7 @@ namespace Dipu.Excel.Embedded
         }
 
         public IWorkbook[] Workbooks => this.WorkbookByInteropWorkbook.Values.Cast<IWorkbook>().ToArray();
-
+        
         public void Handle(string action)
         {
             if (this.handlerByAction.TryGetValue(action, out var handler))

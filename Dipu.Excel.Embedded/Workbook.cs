@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using InteropWorkbook = Microsoft.Office.Interop.Excel.Workbook;
 using InteropWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
 
@@ -15,6 +17,7 @@ namespace Dipu.Excel.Embedded
             this.AddIn = addIn;
             this.InteropWorkbook = interopWorkbook;
             this.worksheetByInteropWorksheet = new Dictionary<InteropWorksheet, Worksheet>();
+            this.AddIn.Application.WorkbookNewSheet += ApplicationOnWorkbookNewSheet;
         }
 
         public AddIn AddIn { get; }
@@ -56,13 +59,14 @@ namespace Dipu.Excel.Embedded
                     interopWorksheet = (InteropWorksheet)this.InteropWorkbook.Sheets.Add(Missing.Value, append, Missing.Value, Missing.Value);
                 }
             }
-
-            var worksheet = new Worksheet(this, interopWorksheet);
-            this.worksheetByInteropWorksheet.Add(interopWorksheet, worksheet);
-            return worksheet;
+            
+            return this.worksheetByInteropWorksheet[interopWorksheet];
         }
 
         public IWorksheet[] Worksheets => this.worksheetByInteropWorksheet.Values.Cast<IWorksheet>().ToArray();
+
+        public bool Active { get; internal set; }
+
         public void Close(bool? saveChanges = null, string fileName = null)
         {
             this.InteropWorkbook.Close((object)saveChanges ?? Missing.Value, (object)fileName ?? Missing.Value, Missing.Value);
@@ -73,6 +77,26 @@ namespace Dipu.Excel.Embedded
             var worksheet = new Worksheet(this, interopWorksheet);
             this.worksheetByInteropWorksheet.Add(interopWorksheet, worksheet);
             return worksheet;
+        }
+
+        private async void ApplicationOnWorkbookNewSheet(InteropWorkbook wb, object sh)
+        {
+            if (sh is InteropWorksheet interopWorksheet)
+            {
+                if (!this.worksheetByInteropWorksheet.TryGetValue(interopWorksheet, out var worksheet))
+                {
+                    worksheet = new Worksheet(this, interopWorksheet);
+                    this.worksheetByInteropWorksheet.Add(interopWorksheet, worksheet);
+                }
+
+                interopWorksheet.BeforeDelete += async () => await this.AddIn.Program.OnBeforeDelete(worksheet);
+
+                await this.AddIn.Program.OnNew(worksheet);
+            }
+            else
+            {
+                Console.WriteLine("Not a InteropWorksheet");
+            }
         }
     }
 }
