@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace Application
 {
@@ -14,8 +13,16 @@ namespace Application
         public async Task OnStart(IAddIn addIn)
         {
             this.AddIn = addIn;
+        }
 
-            this.AddIn.Register(Actions.Dosomething, () => MessageBox.Show("Boom!!!!"));
+        public async Task OnHandle(string controlId)
+        {
+            switch (controlId)
+            {
+                case Actions.Dosomething:
+                    MessageBox.Show("Boom!!!!");
+                    break;
+            }
         }
 
         public async Task OnStop()

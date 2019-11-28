@@ -8,25 +8,6 @@ using System.Text;
 using Dipu.Excel.Embedded;
 using Office = Microsoft.Office.Core;
 
-// TODO:  Follow these steps to enable the Ribbon (XML) item:
-
-// 1: Copy the following code block into the ThisAddin, ThisWorkbook, or ThisDocument class.
-
-//  protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
-//  {
-//      return new Ribbon();
-//  }
-
-// 2. Create callback methods in the "Ribbon Callbacks" region of this class to handle user
-//    actions, such as clicking a button. Note: if you have exported this Ribbon from the Ribbon designer,
-//    move your code from the event handlers to the callback methods and modify the code to work with the
-//    Ribbon extensibility (Ribbon) programming model.
-
-// 3. Assign attributes to the control tags in the Ribbon XML file to identify the appropriate callback methods in your code.  
-
-// For more information, see the Ribbon XML documentation in the Visual Studio Tools for Office Help.
-
-
 namespace ExcelAddInLocal
 {
     [ComVisible(true)]
@@ -34,9 +15,7 @@ namespace ExcelAddInLocal
     {
         private Office.IRibbonUI ribbon;
 
-        public Ribbon()
-        {
-        }
+        private string doSomethingLabel = "Do Something";
 
         public AddIn AddIn { get; set; }
 
@@ -49,14 +28,30 @@ namespace ExcelAddInLocal
 
         #endregion
 
-        #region Ribbon Callbacks
-        //Create callback methods here. For more information about adding callback methods, visit https://go.microsoft.com/fwlink/?LinkID=271226
-        public void OnDoSomething(Office.IRibbonControl control)
+        #region Ribbon Labels
+
+        public string DoSomethingLabel
         {
-            if (control.Id == "doSomethingButton")
+            get => doSomethingLabel;
+            set
             {
-                this.AddIn?.Handle("doSomething");
+                doSomethingLabel = value;
+                this.ribbon.Invalidate();
             }
+        }
+
+        public string GetDoSomethingLabel(Office.IRibbonControl control)
+        {
+            return this.DoSomethingLabel;
+        }
+        
+        #endregion
+
+        #region Ribbon Callbacks
+        
+        public void OnClick(Office.IRibbonControl control)
+        {
+            this.AddIn?.Program.OnHandle(control.Id);
         }
 
         public void Ribbon_Load(Office.IRibbonUI ribbonUI)

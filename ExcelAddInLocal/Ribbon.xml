@@ -2,9 +2,9 @@
 <customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
   <ribbon startFromScratch="false">
     <tabs>
-      <tab id="customTab" label="General" insertAfterMso="TabFile">
-        <group id="customGroup1" label="First Tab">
-            <button id="doSomethingButton" label="Do something" imageMso="HappyFace" size="large" onAction="OnDoSomething" />
+      <tab id="dipuTab" label="Dipu" insertAfterMso="TabFile">
+        <group id="actionGroup" label="Actions">
+            <button id="doSomething" getLabel="GetDoSomethingLabel" imageMso="MicrosoftVisualFoxPro" onAction="OnClick" />
         </group>
       </tab>
     </tabs>
