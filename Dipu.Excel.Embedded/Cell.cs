@@ -35,9 +35,10 @@
             get => this.value;
             set
             {
-                if (this.UpdateValue(value))
+                if (!Equals(this.value, value))
                 {
                     this.Worksheet.AddDirtyValue(this);
+                    this.value = value;
                 }
             }
         }

@@ -1,4 +1,6 @@
-﻿namespace Dipu.Excel
+﻿using System.Linq;
+
+namespace Dipu.Excel
 {
     public class DefaultExcelConverter : IExcelValueConverter
     {
@@ -18,8 +20,23 @@
                 {
                     return decimalMax;
                 }
+
+                return System.Convert.ToDecimal(excelValue);
             }
 
+            if (cell.Value is string @string)
+            {
+                if (excelValue == null)
+                {
+                    return string.Empty;
+                }
+
+                if (excelValue is double)
+                {
+                    return excelValue.ToString();
+                }
+            }
+            
             return excelValue;
         }
     }
