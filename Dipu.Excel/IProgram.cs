@@ -15,5 +15,7 @@
         Task OnNew(IWorksheet worksheet);
 
         Task OnBeforeDelete(IWorksheet worksheet);
+
+        Task OnHandle(string controlId);
     }
 }

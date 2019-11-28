@@ -11,14 +11,12 @@ namespace Dipu.Excel.Embedded
 {
     public class AddIn : IAddIn
     {
-        private readonly Dictionary<string, Action> handlerByAction;
         private readonly Dictionary<InteropWorkbook, Workbook> workbookByInteropWorkbook;
 
         public AddIn(InteropApplication application, IProgram program)
         {
             this.Application = application;
             this.Program = program;
-            this.handlerByAction = new Dictionary<string, Action>();
             this.workbookByInteropWorkbook = new Dictionary<InteropWorkbook, Workbook>();
 
             ((AppEvents_Event)this.Application).NewWorkbook += async interopWorkbook =>
@@ -72,22 +70,9 @@ namespace Dipu.Excel.Embedded
         public IProgram Program { get; }
 
         public IReadOnlyDictionary<InteropWorkbook, Workbook> WorkbookByInteropWorkbook => workbookByInteropWorkbook;
-
-        public void Register(string action, Action handler)
-        {
-            this.handlerByAction[action] = handler;
-        }
-
-        public IWorkbook[] Workbooks => this.WorkbookByInteropWorkbook.Values.Cast<IWorkbook>().ToArray();
         
-        public void Handle(string action)
-        {
-            if (this.handlerByAction.TryGetValue(action, out var handler))
-            {
-                handler();
-            }
-        }
-
+        public IWorkbook[] Workbooks => this.WorkbookByInteropWorkbook.Values.Cast<IWorkbook>().ToArray();
+       
         public Workbook New(InteropWorkbook interopWorkbook)
         {
             if (!this.workbookByInteropWorkbook.TryGetValue(interopWorkbook, out var workbook))

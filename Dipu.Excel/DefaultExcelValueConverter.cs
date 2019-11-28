@@ -6,37 +6,61 @@ namespace Dipu.Excel
     {
         public object Convert(ICell cell, object excelValue)
         {
-            if (cell.Value is decimal @decimal && excelValue is double @double)
             {
-                const double decimalMin = (double)decimal.MinValue;
-                const double decimalMax = (double)decimal.MaxValue;
-
-                if (@double < decimalMin)
+                if (cell.Value is decimal @decimal && excelValue is double @double)
                 {
-                    return decimalMin;
-                }
+                    const double min = (double)decimal.MinValue;
+                    const double max = (double)decimal.MaxValue;
 
-                if (@double > decimalMax)
-                {
-                    return decimalMax;
-                }
+                    if (@double < min)
+                    {
+                        return min;
+                    }
 
-                return System.Convert.ToDecimal(excelValue);
+                    if (@double > max)
+                    {
+                        return max;
+                    }
+
+                    return System.Convert.ToDecimal(excelValue);
+                }
             }
 
-            if (cell.Value is string @string)
             {
-                if (excelValue == null)
+                if (cell.Value is int @integer && excelValue is double @double)
                 {
-                    return string.Empty;
-                }
+                    const double min = (double)int.MinValue;
+                    const double max = (double)int.MaxValue;
 
-                if (excelValue is double)
-                {
-                    return excelValue.ToString();
+                    if (@double < min)
+                    {
+                        return min;
+                    }
+
+                    if (@double > max)
+                    {
+                        return max;
+                    }
+
+                    return System.Convert.ToInt32(excelValue);
                 }
             }
-            
+
+            {
+                if (cell.Value is string @string)
+                {
+                    if (excelValue == null)
+                    {
+                        return string.Empty;
+                    }
+
+                    if (!(excelValue is string))
+                    {
+                        return excelValue.ToString();
+                    }
+                }
+            }
+
             return excelValue;
         }
     }
