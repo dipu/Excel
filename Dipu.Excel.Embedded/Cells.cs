@@ -37,7 +37,7 @@ namespace Dipu.Excel.Embedded
                         (acc, w) =>
                         {
                             var list = acc[acc.Count - 1];
-                            if (list.Count == 0 || (list[list.Count - 1][0].Row + 1 == w[0].Row && combine(list[list.Count - 1][0], w[0])))
+                            if (list.Count == 0 || (list[list.Count - 1].Count == w.Count && list[list.Count - 1][0].Row + 1 == w[0].Row && combine(list[list.Count - 1][0], w[0])))
                             {
                                 list.Add(w);
                             }

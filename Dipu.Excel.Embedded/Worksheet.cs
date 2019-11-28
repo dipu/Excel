@@ -102,25 +102,32 @@ namespace Dipu.Excel.Embedded
         {
             foreach (var chunk in cells.Chunks((v, w) => true))
             {
-                var values = new object[chunk.Count, chunk[0].Count];
-                for (var i = 0; i < chunk.Count; i++)
+                try
                 {
-                    for (var j = 0; j < chunk[0].Count; j++)
+                    var values = new object[chunk.Count, chunk[0].Count];
+                    for (var i = 0; i < chunk.Count; i++)
                     {
-                        values[i, j] = chunk[i][j].Value;
+                        for (var j = 0; j < chunk[0].Count; j++)
+                        {
+                            values[i, j] = chunk[i][j].Value;
+                        }
                     }
+
+                    var fromRow = chunk.First().First().Row;
+                    var fromColumn = chunk.First().First().Column;
+
+                    var toRow = chunk.Last().Last().Row;
+                    var toColumn = chunk.Last().Last().Column;
+
+                    var from = this.InteropWorksheet.Cells[fromRow + 1, fromColumn + 1];
+                    var to = this.InteropWorksheet.Cells[toRow + 1, toColumn + 1];
+                    var range = this.InteropWorksheet.Range[from, to];
+                    range.Value2 = values;
                 }
-
-                var fromRow = chunk.First().First().Row;
-                var fromColumn = chunk.First().First().Column;
-
-                var toRow = chunk.Last().Last().Row;
-                var toColumn = chunk.Last().Last().Column;
-
-                var from = this.InteropWorksheet.Cells[fromRow + 1, fromColumn + 1];
-                var to = this.InteropWorksheet.Cells[toRow + 1, toColumn + 1];
-                var range = this.InteropWorksheet.Range[from, to];
-                range.Value2 = values;
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
         }
 
