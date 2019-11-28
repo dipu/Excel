@@ -17,6 +17,9 @@ namespace Dipu.Excel.Tests.Embedded
 
             var chunks = cells.Chunks((v, w) => true).ToArray();
             Assert.Single(chunks);
+
+            chunks = cells.Chunks((v, w) => false).ToArray();
+            Assert.Equal(2, chunks.Length);
         }
 
         [Fact]

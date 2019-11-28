@@ -55,12 +55,19 @@ namespace Application
                 }
             }
 
+            var style = new Style(Color.Red, Color.White);
+            sheet[3, 3].Style = style;
+            sheet[3, 5].Style = style;
+            sheet[4, 4].Style = style;
+            sheet[5, 3].Style = style;
+            sheet[5, 5].Style = style;
+
             await sheet.Flush();
-            
+
             sheet[0, 0].Value = "Whoppa!";
             sheet[0, 0].Comment = "De Poppa!";
 
-            sheet[5, 5].Style = this.CanNotWriteCellStyle;
+            sheet[10, 2].Style = this.CanNotWriteCellStyle;
 
             await sheet.Flush();
 
@@ -71,7 +78,7 @@ namespace Application
                     cell.Style = this.ChangedCellStyle;
                 }
 
-                ((IWorksheet) sender).Flush();
+                ((IWorksheet)sender).Flush();
 
                 //MessageBox.Show($"Cells changed: {string.Join(",", v.Cells.Select(w => $"{w.Row}:{w.Column}"))}");
             };
