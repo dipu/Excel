@@ -183,9 +183,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Ribbon.resx">
-      <DependentUpon>Ribbon.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="ExcelAddInLocal_TemporaryKey.pfx" />
     <None Include="Overview.cd" />
     <None Include="Properties\Settings.settings">
@@ -196,12 +193,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Ribbon.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Ribbon.Designer.cs">
-      <DependentUpon>Ribbon.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Ribbon.cs" />
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -223,7 +215,9 @@
       <Name>Dipu.Excel</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Ribbon.xml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -235,7 +229,7 @@
     <ManifestKeyFile>ExcelAddInLocal_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>A815BE75A7A0C269D0E5C85F9E83482FBE2458BA</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>33CEFDD20E72000337435A428489BA76BD1A279A</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

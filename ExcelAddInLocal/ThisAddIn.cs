@@ -20,7 +20,7 @@ namespace ExcelAddInLocal
 
             var program = new Program();
             this.addIn = new AddIn(this.Application, program);
-            Globals.Ribbons.Ribbon.AddIn = this.addIn;
+            this.Ribbon.AddIn = this.addIn;
             await program.OnStart(addIn);
         }
 
@@ -29,7 +29,16 @@ namespace ExcelAddInLocal
             await this.addIn.Program.OnStop();
         }
 
-        #region VSTO generated code
+          protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
+          {
+              this.Ribbon = new Ribbon();
+              
+              return this.Ribbon;
+          }
+
+          public Ribbon Ribbon { get; set; }
+
+          #region VSTO generated code
 
         /// <summary>
         /// Required method for Designer support - do not modify

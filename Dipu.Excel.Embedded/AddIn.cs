@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Allors.Excel;
 using Microsoft.Office.Interop.Excel;
 using Action = System.Action;
 using InteropApplication = Microsoft.Office.Interop.Excel.Application;
@@ -58,7 +57,11 @@ namespace Dipu.Excel.Embedded
 
             this.Application.WorkbookDeactivate += wb =>
             {
-                this.WorkbookByInteropWorkbook[wb].Active = false;
+                // Could already be gone by the WorkbookBeforeClose event
+                if (this.WorkbookByInteropWorkbook.TryGetValue(wb, out var workbook))
+                {
+                    this.WorkbookByInteropWorkbook[wb].Active = false;
+                }
             };
 
             this.Application.WorkbookBeforeClose += WorkbookBeforeClose;

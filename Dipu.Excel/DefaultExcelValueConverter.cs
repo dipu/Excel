@@ -18,8 +18,6 @@
                 {
                     return decimalMax;
                 }
-
-                return @decimal;
             }
 
             return excelValue;
