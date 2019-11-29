@@ -9,7 +9,7 @@
         private readonly IExcelValueConverter defaultExcelValueConverter = new DefaultExcelConverter();
         private string comment;
 
-        public Cell(Worksheet worksheet, int row, int column)
+        public Cell(IEmbeddedWorksheet worksheet, int row, int column)
         {
             Worksheet = worksheet;
             Row = row;
@@ -18,7 +18,7 @@
 
         IWorksheet ICell.Worksheet => this.Worksheet;
 
-        public Worksheet Worksheet { get; }
+        public IEmbeddedWorksheet Worksheet { get; }
 
         int ICell.Row => this.Row;
 
@@ -86,6 +86,11 @@
         {
             get => excelValueConverter ?? this.defaultExcelValueConverter;
             set => excelValueConverter = value;
+        }
+
+        public override string ToString()
+        {
+            return $"{Row}:{Column}";
         }
 
         public bool UpdateValue(object rawExcelValue)

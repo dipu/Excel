@@ -2,14 +2,23 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Office.Interop.Excel;
 using InteropWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
 
 namespace Dipu.Excel.Embedded
 {
-    public class Worksheet : IWorksheet
+    public interface IEmbeddedWorksheet: IWorksheet {
+        void AddDirtyValue(Cell cell);
+        
+        void AddDirtyComment(Cell cell);
+        
+        void AddDirtyStyle(Cell cell);
+
+        void AddDirtyNumberFormat(Cell cell);
+    }
+
+    public class Worksheet : IEmbeddedWorksheet
     {
         private Dictionary<string, Cell> CellByRowColumn { get; }
 
