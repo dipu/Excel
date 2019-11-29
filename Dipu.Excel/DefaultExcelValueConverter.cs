@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Dipu.Excel
 {
@@ -43,6 +44,13 @@ namespace Dipu.Excel
                     }
 
                     return System.Convert.ToInt32(excelValue);
+                }
+            }
+
+            {
+                if (cell.Value is DateTime dateTime && excelValue is double @double)
+                {
+                    return DateTime.FromOADate(@double);
                 }
             }
 
