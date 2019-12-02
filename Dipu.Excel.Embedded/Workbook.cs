@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Nito.AsyncEx;
 using InteropWorkbook = Microsoft.Office.Interop.Excel.Workbook;
 using InteropWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
 
@@ -79,7 +80,7 @@ namespace Dipu.Excel.Embedded
             return worksheet;
         }
 
-        private async void ApplicationOnWorkbookNewSheet(InteropWorkbook wb, object sh)
+        private void ApplicationOnWorkbookNewSheet(InteropWorkbook wb, object sh) => AsyncContext.Run(async () =>
         {
             if (sh is InteropWorksheet interopWorksheet)
             {
@@ -97,6 +98,6 @@ namespace Dipu.Excel.Embedded
             {
                 Console.WriteLine("Not a InteropWorksheet");
             }
-        }
+        });
     }
 }
