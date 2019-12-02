@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using Dipu.Excel.Embedded;
+using Nito.AsyncEx;
 using Office = Microsoft.Office.Core;
 
 namespace ExcelAddInLocal
@@ -48,11 +49,14 @@ namespace ExcelAddInLocal
         #endregion
 
         #region Ribbon Callbacks
-        
-        public void OnClick(Office.IRibbonControl control)
+
+        public void OnClick(Office.IRibbonControl control) => AsyncContext.Run(async () =>
         {
-            this.AddIn?.Program.OnHandle(control.Id);
-        }
+            if (this.AddIn != null)
+            {
+                await this.AddIn.Program.OnHandle(control.Id);
+            }
+        });
 
         public void Ribbon_Load(Office.IRibbonUI ribbonUI)
         {
