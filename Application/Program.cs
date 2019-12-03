@@ -1,4 +1,4 @@
-﻿using System.Windows.Forms;
+using System.Windows.Forms;
 
 namespace Application
 {
@@ -71,7 +71,7 @@ namespace Application
 
             await sheet.Flush();
 
-            sheet.CellChanged += (sender, v) =>
+            sheet.CellsChanged += (sender, v) =>
             {
                 foreach (var cell in v.Cells)
                 {

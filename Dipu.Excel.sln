@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dipu.Excel.Tests", "Dipu.Excel.Tests\Dipu.Excel.Tests.csproj", "{27214DC1-C583-4D6F-BAF4-301B9F66A220}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dipu.Excel.AddIn", "Dipu.Excel.AddIn\Dipu.Excel.AddIn.csproj", "{5415813C-2AE0-4235-9D82-3C90E328AC8A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{27214DC1-C583-4D6F-BAF4-301B9F66A220}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27214DC1-C583-4D6F-BAF4-301B9F66A220}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27214DC1-C583-4D6F-BAF4-301B9F66A220}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5415813C-2AE0-4235-9D82-3C90E328AC8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5415813C-2AE0-4235-9D82-3C90E328AC8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5415813C-2AE0-4235-9D82-3C90E328AC8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5415813C-2AE0-4235-9D82-3C90E328AC8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

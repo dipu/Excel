@@ -100,19 +100,7 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="Nito.AsyncEx.Context, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Nito.AsyncEx.Context.5.0.0\lib\netstandard2.0\Nito.AsyncEx.Context.dll</HintPath>
-    </Reference>
-    <Reference Include="Nito.AsyncEx.Tasks, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Nito.AsyncEx.Tasks.5.0.0\lib\netstandard2.0\Nito.AsyncEx.Tasks.dll</HintPath>
-    </Reference>
-    <Reference Include="Nito.Disposables, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Nito.Disposables.2.0.0\lib\netstandard2.0\Nito.Disposables.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.4.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
-    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -168,21 +156,6 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="..\Dipu.Excel.Embedded\AddIn.cs">
-      <Link>Dipu.Excel.Embedded\AddIn.cs</Link>
-    </Compile>
-    <Compile Include="..\Dipu.Excel.Embedded\Cell.cs">
-      <Link>Dipu.Excel.Embedded\Cell.cs</Link>
-    </Compile>
-    <Compile Include="..\Dipu.Excel.Embedded\Cells.cs">
-      <Link>Dipu.Excel.Embedded\Cells.cs</Link>
-    </Compile>
-    <Compile Include="..\Dipu.Excel.Embedded\Workbook.cs">
-      <Link>Dipu.Excel.Embedded\Workbook.cs</Link>
-    </Compile>
-    <Compile Include="..\Dipu.Excel.Embedded\Worksheet.cs">
-      <Link>Dipu.Excel.Embedded\Worksheet.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -222,6 +195,10 @@
     <ProjectReference Include="..\Application\Application.csproj">
       <Project>{3F5AC3C0-DB39-415E-8224-7C5474C92F2A}</Project>
       <Name>Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dipu.Excel.AddIn\Dipu.Excel.AddIn.csproj">
+      <Project>{5415813c-2ae0-4235-9d82-3c90e328ac8a}</Project>
+      <Name>Dipu.Excel.AddIn</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dipu.Excel\Dipu.Excel.csproj">
       <Project>{f8cac0a9-2622-47e2-9d13-4714aec25e8f}</Project>
