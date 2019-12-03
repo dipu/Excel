@@ -4,6 +4,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Dipu.Excel.Embedded;
 using Application;
+using Microsoft.Extensions.DependencyInjection;
 using Nito.AsyncEx;
 using AppEvents_Event = Microsoft.Office.Interop.Excel.AppEvents_Event;
 using InteropWorkbook = Microsoft.Office.Interop.Excel.Workbook;
@@ -17,10 +18,12 @@ namespace ExcelAddInLocal
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e) => AsyncContext.Run(async () =>
         {
-            SynchronizationContext windowsFormsSynchronizationContext = new WindowsFormsSynchronizationContext();
-            SynchronizationContext.SetSynchronizationContext(windowsFormsSynchronizationContext);
+            var serviceProvider = new ServiceCollection()
+                // TODO: use DI logging
+                //.AddLogging()
+                .BuildServiceProvider();
 
-            var program = new Program();
+            var program = new Program(serviceProvider);
             this.addIn = new AddIn(this.Application, program);
             this.Ribbon.AddIn = this.addIn;
             await program.OnStart(addIn);
@@ -33,6 +36,9 @@ namespace ExcelAddInLocal
 
         protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
+            SynchronizationContext windowsFormsSynchronizationContext = new WindowsFormsSynchronizationContext();
+            SynchronizationContext.SetSynchronizationContext(windowsFormsSynchronizationContext);
+
             this.Ribbon = new Ribbon();
             return this.Ribbon;
         }

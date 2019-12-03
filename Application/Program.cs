@@ -1,4 +1,5 @@
 using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
 {
@@ -8,6 +9,13 @@ namespace Application
 
     public class Program : IProgram
     {
+        public Program(ServiceProvider serviceProvider)
+        {
+            this.ServiceProvider = serviceProvider;
+        }
+
+        public ServiceProvider ServiceProvider { get; }
+
         public IAddIn AddIn { get; private set; }
 
         public async Task OnStart(IAddIn addIn)
