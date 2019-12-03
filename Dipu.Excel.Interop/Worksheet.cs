@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -8,11 +8,12 @@ using InteropWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
 
 namespace Dipu.Excel.Embedded
 {
-    public interface IEmbeddedWorksheet: IWorksheet {
+    public interface IEmbeddedWorksheet : IWorksheet
+    {
         void AddDirtyValue(Cell cell);
-        
+
         void AddDirtyComment(Cell cell);
-        
+
         void AddDirtyStyle(Cell cell);
 
         void AddDirtyNumberFormat(Cell cell);
@@ -144,7 +145,7 @@ namespace Dipu.Excel.Embedded
         {
             foreach (var cell in cells)
             {
-                Range partCell = this.InteropWorksheet.Cells[cell.Row + 1, cell.Column + 1];
+                var partCell = (Range)this.InteropWorksheet.Cells[cell.Row + 1, cell.Column + 1];
 
                 if (partCell.Comment == null)
                 {
