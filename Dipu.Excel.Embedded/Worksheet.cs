@@ -65,7 +65,7 @@ namespace Dipu.Excel.Embedded
 
             if (cells != null)
             {
-                this.CellChanged?.Invoke(this, new CellChangedEvent(cells.Cast<ICell>().ToArray()));
+                this.CellsChanged?.Invoke(this, new CellChangedEvent(cells.Cast<ICell>().ToArray()));
             }
         }
 
@@ -75,7 +75,7 @@ namespace Dipu.Excel.Embedded
 
         public string Name { get => this.InteropWorksheet.Name; set => this.InteropWorksheet.Name = value; }
 
-        public event EventHandler<CellChangedEvent> CellChanged;
+        public event EventHandler<CellChangedEvent> CellsChanged;
 
         public ICell this[int row, int column]
         {

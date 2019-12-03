@@ -1,12 +1,14 @@
-﻿namespace Dipu.Excel.Embedded
+﻿using System;
+
+namespace Dipu.Excel.Embedded
 {
     public class Cell : ICell
     {
         private object value;
         private Style style;
         private string numberFormat;
-        private IExcelValueConverter excelValueConverter;
-        private readonly IExcelValueConverter defaultExcelValueConverter = new DefaultExcelConverter();
+        private IValueConverter valueConverter;
+        private readonly IValueConverter defaultValueConverter = new DefaultValueConverter();
         private string comment;
 
         public Cell(IEmbeddedWorksheet worksheet, int row, int column)
@@ -82,10 +84,10 @@
             }
         }
 
-        public IExcelValueConverter ExcelValueConverter
+        public IValueConverter ValueConverter
         {
-            get => excelValueConverter ?? this.defaultExcelValueConverter;
-            set => excelValueConverter = value;
+            get => valueConverter ?? this.defaultValueConverter;
+            set => valueConverter = value;
         }
 
         public override string ToString()
@@ -95,7 +97,7 @@
 
         public bool UpdateValue(object rawExcelValue)
         {
-            var excelValue = this.ExcelValueConverter.Convert(this, rawExcelValue);
+            var excelValue = this.ValueConverter.Convert(this, rawExcelValue);
             var update = !Equals(this.value, excelValue);
 
             if (update)

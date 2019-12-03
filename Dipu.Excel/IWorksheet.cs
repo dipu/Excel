@@ -5,7 +5,7 @@ namespace Dipu.Excel
 {
     public interface IWorksheet
     {
-        event EventHandler<CellChangedEvent> CellChanged;
+        event EventHandler<CellChangedEvent> CellsChanged;
 
         string Name { get; set; }
 

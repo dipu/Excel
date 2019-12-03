@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Dipu.Excel
 {
-    public class DefaultExcelConverter : IExcelValueConverter
+    public class DefaultValueConverter : IValueConverter
     {
         public object Convert(ICell cell, object excelValue)
         {

@@ -1,6 +1,6 @@
 ﻿namespace Dipu.Excel
 {
-    public interface IExcelValueConverter
+    public interface IValueConverter
     {
         object Convert(ICell cell, object excelValue);
     }
