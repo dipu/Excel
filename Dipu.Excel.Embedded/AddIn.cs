@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Office.Interop.Excel;
@@ -70,9 +70,9 @@ namespace Dipu.Excel.Embedded
         public IProgram Program { get; }
 
         public IReadOnlyDictionary<InteropWorkbook, Workbook> WorkbookByInteropWorkbook => workbookByInteropWorkbook;
-        
+
         public IWorkbook[] Workbooks => this.WorkbookByInteropWorkbook.Values.Cast<IWorkbook>().ToArray();
-       
+
         public Workbook New(InteropWorkbook interopWorkbook)
         {
             if (!this.workbookByInteropWorkbook.TryGetValue(interopWorkbook, out var workbook))

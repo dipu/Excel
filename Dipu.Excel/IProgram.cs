@@ -16,6 +16,6 @@
 
         Task OnBeforeDelete(IWorksheet worksheet);
 
-        Task OnHandle(string controlId);
+        Task OnHandle(string handle);
     }
 }

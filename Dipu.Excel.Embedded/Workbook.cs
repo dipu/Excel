@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Nito.AsyncEx;
-using InteropWorkbook = Microsoft.Office.Interop.Excel.Workbook;
-using InteropWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
-
 namespace Dipu.Excel.Embedded
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using Nito.AsyncEx;
+    using InteropWorkbook = Microsoft.Office.Interop.Excel.Workbook;
+    using InteropWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
+
     public class Workbook : IWorkbook
     {
         private readonly Dictionary<InteropWorksheet, Worksheet> worksheetByInteropWorksheet;
@@ -60,7 +59,7 @@ namespace Dipu.Excel.Embedded
                     interopWorksheet = (InteropWorksheet)this.InteropWorkbook.Sheets.Add(Missing.Value, append, Missing.Value, Missing.Value);
                 }
             }
-            
+
             return this.worksheetByInteropWorksheet[interopWorksheet];
         }
 
