@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dipu.Excel", "Dipu.Excel\Dipu.Excel.csproj", "{F8CAC0A9-2622-47E2-9D13-4714AEC25E8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelAddInLocal", "ExcelAddInLocal\ExcelAddInLocal.csproj", "{7A3D1A5A-DDA8-4723-B65F-F35E4D29D154}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{3F5AC3C0-DB39-415E-8224-7C5474C92F2A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dipu.Excel.Tests", "Dipu.Excel.Tests\Dipu.Excel.Tests.csproj", "{27214DC1-C583-4D6F-BAF4-301B9F66A220}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dipu.Excel.AddIn", "Dipu.Excel.AddIn\Dipu.Excel.AddIn.csproj", "{5415813C-2AE0-4235-9D82-3C90E328AC8A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dipu.Excel.Interop", "Dipu.Excel.Interop\Dipu.Excel.Interop.csproj", "{1515E412-6F37-4A52-9912-41B8CBC8DF6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelAddIn.Interop", "ExcelAddIn.Interop\ExcelAddIn.Interop.csproj", "{6F2E98C0-E1EA-43BC-B703-749F86594AD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		{F8CAC0A9-2622-47E2-9D13-4714AEC25E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8CAC0A9-2622-47E2-9D13-4714AEC25E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8CAC0A9-2622-47E2-9D13-4714AEC25E8F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A3D1A5A-DDA8-4723-B65F-F35E4D29D154}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A3D1A5A-DDA8-4723-B65F-F35E4D29D154}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A3D1A5A-DDA8-4723-B65F-F35E4D29D154}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A3D1A5A-DDA8-4723-B65F-F35E4D29D154}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3F5AC3C0-DB39-415E-8224-7C5474C92F2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3F5AC3C0-DB39-415E-8224-7C5474C92F2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F5AC3C0-DB39-415E-8224-7C5474C92F2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -35,10 +31,14 @@ Global
 		{27214DC1-C583-4D6F-BAF4-301B9F66A220}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27214DC1-C583-4D6F-BAF4-301B9F66A220}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27214DC1-C583-4D6F-BAF4-301B9F66A220}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5415813C-2AE0-4235-9D82-3C90E328AC8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5415813C-2AE0-4235-9D82-3C90E328AC8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5415813C-2AE0-4235-9D82-3C90E328AC8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5415813C-2AE0-4235-9D82-3C90E328AC8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1515E412-6F37-4A52-9912-41B8CBC8DF6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1515E412-6F37-4A52-9912-41B8CBC8DF6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1515E412-6F37-4A52-9912-41B8CBC8DF6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1515E412-6F37-4A52-9912-41B8CBC8DF6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F2E98C0-E1EA-43BC-B703-749F86594AD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F2E98C0-E1EA-43BC-B703-749F86594AD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F2E98C0-E1EA-43BC-B703-749F86594AD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F2E98C0-E1EA-43BC-B703-749F86594AD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
