@@ -16,7 +16,8 @@ namespace Dipu.Excel.Embedded
             this.AddIn = addIn;
             this.InteropWorkbook = interopWorkbook;
             this.worksheetByInteropWorksheet = new Dictionary<InteropWorksheet, Worksheet>();
-            this.AddIn.Application.WorkbookNewSheet += ApplicationOnWorkbookNewSheet;
+            this.AddIn.Application.WorkbookNewSheet += this.ApplicationOnWorkbookNewSheet;
+            this.AddIn.Application.SheetBeforeDelete += this.ApplicationOnSheetBeforeDelete;
         }
 
         public AddIn AddIn { get; }
@@ -91,6 +92,18 @@ namespace Dipu.Excel.Embedded
                 interopWorksheet.BeforeDelete += async () => await this.AddIn.Program.OnBeforeDelete(worksheet);
 
                 await this.AddIn.Program.OnNew(worksheet);
+            }
+            else
+            {
+                Console.WriteLine("Not a InteropWorksheet");
+            }
+        }
+
+        private void ApplicationOnSheetBeforeDelete(object sh)
+        {
+            if (sh is InteropWorksheet interopWorksheet)
+            {
+                this.worksheetByInteropWorksheet.Remove(interopWorksheet);
             }
             else
             {

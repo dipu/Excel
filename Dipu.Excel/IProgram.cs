@@ -1,4 +1,4 @@
-﻿namespace Dipu.Excel
+namespace Dipu.Excel
 {
     using System.Threading.Tasks;
 
@@ -11,7 +11,7 @@
         Task OnNew(IWorkbook workbook);
 
         void OnClose(IWorkbook workbook, ref bool cancel);
-        
+
         Task OnNew(IWorksheet worksheet);
 
         Task OnBeforeDelete(IWorksheet worksheet);

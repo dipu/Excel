@@ -1,4 +1,4 @@
-﻿namespace Dipu.Excel
+namespace Dipu.Excel
 {
     public interface IAddIn
     {

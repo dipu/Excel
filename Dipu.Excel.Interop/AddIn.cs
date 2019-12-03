@@ -9,6 +9,8 @@ using InteropWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
 
 namespace Dipu.Excel.Embedded
 {
+    using Allors.Protocol.Remote;
+
     public class AddIn : IAddIn
     {
         private readonly Dictionary<InteropWorkbook, Workbook> workbookByInteropWorkbook;

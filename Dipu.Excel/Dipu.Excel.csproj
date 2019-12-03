@@ -8,4 +8,8 @@
     <Compile Remove="Program.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Protocol\Allors.Protocol\Allors.Protocol.csproj" />
+  </ItemGroup>
+
 </Project>
