@@ -46,10 +46,6 @@
     <Compile Include="Worksheet.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Platform\Protocol\Allors.Protocol\Allors.Protocol.csproj">
-      <Project>{CAA54BA6-A4F9-4ADA-98B6-833DF07B4824}</Project>
-      <Name>Allors.Protocol</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dipu.Excel\Dipu.Excel.csproj">
       <Project>{f8cac0a9-2622-47e2-9d13-4714aec25e8f}</Project>
       <Name>Dipu.Excel</Name>
