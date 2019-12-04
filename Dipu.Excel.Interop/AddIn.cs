@@ -1,17 +1,13 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Office.Interop.Excel;
-using Action = System.Action;
-using InteropApplication = Microsoft.Office.Interop.Excel.Application;
-using InteropWorkbook = Microsoft.Office.Interop.Excel.Workbook;
-using InteropWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
-
 namespace Dipu.Excel.Embedded
 {
-    using Allors.Protocol.Remote;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Microsoft.Office.Interop.Excel;
+    using InteropApplication = Microsoft.Office.Interop.Excel.Application;
+    using InteropWorkbook = Microsoft.Office.Interop.Excel.Workbook;
+    using InteropWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
 
-    public class AddIn : IAddIn
+    public class AddIn : Excel.IAddIn
     {
         private readonly Dictionary<InteropWorkbook, Workbook> workbookByInteropWorkbook;
 
@@ -86,9 +82,6 @@ namespace Dipu.Excel.Embedded
             return workbook;
         }
 
-        public void Close(InteropWorkbook interopWorkbook)
-        {
-            this.workbookByInteropWorkbook.Remove(interopWorkbook);
-        }
+        public void Close(InteropWorkbook interopWorkbook) => this.workbookByInteropWorkbook.Remove(interopWorkbook);
     }
 }
