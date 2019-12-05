@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Dipu.Excel
 {
@@ -17,11 +18,17 @@ namespace Dipu.Excel
 
         public event EventHandler ToDomained;
 
+        private IDictionary<ICell, Style> ChangedCells;
         public Binder(IWorksheet worksheet)
         {
             this.Worksheet = worksheet;
             this.Worksheet.CellsChanged += Worksheet_CellsChanged;
+
+            this.ChangedCells = new Dictionary<ICell, Style>();
+            this.ChangedStyle = new Style(Color.DeepSkyBlue, Color.Black);
         }
+
+        public Style ChangedStyle { get; set; }
 
         public void ToCells()
         {
@@ -39,11 +46,34 @@ namespace Dipu.Excel
             {
                 if (this.BindingByCell.TryGetValue(cell, out var binding))
                 {
-                    binding.ToDomain(cell);
+                    if (binding.TwoWayBinding)
+                    {
+                        binding.ToDomain(cell);
+                        
+                        this.ChangedCells.Add(cell, cell.Style);
+
+                        cell.Style = this.ChangedStyle;
+                    }
+                    else
+                    {
+                        binding.ToCell(cell);
+                    }
                 }
             }
 
             ToDomained?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void ResetChangedCells()
+        {
+            foreach (var kvp in this.ChangedCells)
+            {
+                var cell = kvp.Key;
+                var style = kvp.Value;
+                cell.Style = style;
+            }
+
+            this.ChangedCells = new Dictionary<ICell, Style>();
         }
     }
 }

@@ -42,7 +42,12 @@ namespace Dipu.Excel.Embedded
             this.DirtyNumberFormatCells = new HashSet<Cell>();
 
             interopWorksheet.Change += InteropWorksheet_Change;
+
+            ((Microsoft.Office.Interop.Excel.DocEvents_Event)interopWorksheet).Activate += () => this.Active = true;
+            ((Microsoft.Office.Interop.Excel.DocEvents_Event)interopWorksheet).Deactivate += () => this.Active = false;
         }
+
+        public bool Active { get; private set; }
 
         private void InteropWorksheet_Change(Range target)
         {
@@ -107,7 +112,7 @@ namespace Dipu.Excel.Embedded
             this.RenderStyle(this.DirtyStyleCells);
             this.DirtyStyleCells = new HashSet<Cell>();
         }
-
+        
         public void RenderValue(IEnumerable<Cell> cells)
         {
             foreach (var chunk in cells.Chunks((v, w) => true))
@@ -171,7 +176,15 @@ namespace Dipu.Excel.Embedded
                 var to = this.InteropWorksheet.Cells[toRow + 1, toColumn + 1];
                 var range = this.InteropWorksheet.Range[from, to];
 
-                range.Interior.Color = ColorTranslator.ToOle(chunk[0][0].Style.BackgroundColor);
+                var cc = chunk[0][0];
+                if (cc.Style != null)
+                {
+                    range.Interior.Color =  ColorTranslator.ToOle(chunk[0][0].Style.BackgroundColor);
+                }
+                else
+                {
+                    range.Interior.ColorIndex = XlColorIndex.xlColorIndexAutomatic;
+                }
             }
         }
 

@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace Dipu.Excel.Embedded
 {
     using System;
@@ -76,7 +78,13 @@ namespace Dipu.Excel.Embedded
         {
             var worksheet = new Worksheet(this, interopWorksheet);
             this.worksheetByInteropWorksheet.Add(interopWorksheet, worksheet);
+            
             return worksheet;
+        }
+
+        private void Workbook_Activate()
+        {
+            throw new NotImplementedException();
         }
 
         private async void ApplicationOnWorkbookNewSheet(InteropWorkbook wb, object sh)

@@ -9,6 +9,8 @@ namespace Dipu.Excel
 
         string Name { get; set; }
 
+        bool Active { get; }
+
         ICell this[int row, int column]
         {
             get;

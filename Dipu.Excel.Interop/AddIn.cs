@@ -50,6 +50,7 @@ namespace Dipu.Excel.Embedded
             {
                 this.WorkbookByInteropWorkbook[wb].Active = true;
             };
+            
 
             this.Application.WorkbookDeactivate += wb =>
             {

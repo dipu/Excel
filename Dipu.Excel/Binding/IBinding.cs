@@ -10,5 +10,9 @@ namespace Dipu.Excel
         void ToCell(ICell cell);
 
         void ToDomain(ICell cell);
+
+        bool OneWayBinding { get; }
+
+        bool TwoWayBinding { get; }
     }
 }

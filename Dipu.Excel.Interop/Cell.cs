@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Dipu.Excel.Embedded
 {
@@ -10,6 +11,7 @@ namespace Dipu.Excel.Embedded
         private IValueConverter valueConverter;
         private readonly IValueConverter defaultValueConverter = new DefaultValueConverter();
         private string comment;
+       
 
         public Cell(IEmbeddedWorksheet worksheet, int row, int column)
         {
