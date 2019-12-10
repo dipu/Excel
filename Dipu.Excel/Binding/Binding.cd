@@ -1,29 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Dipu.Excel.Binder">
-    <Position X="4" Y="0.5" Width="1.5" />
+    <Position X="3.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAEEAAAEAAAAAACAAIAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAQAAAQABAAAAECAAgEBAQAAAAAAIAAgAAAAAAA=</HashCode>
       <FileName>Binding\Binder.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="worksheet" />
+      <Property Name="Worksheet" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
-      <Property Name="BindingByCell" />
+      <Field Name="bindingByCell" />
     </ShowAsCollectionAssociation>
   </Class>
   <Interface Name="Dipu.Excel.IWorksheet">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAACAEAAAQAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAACAEAAAQAAAAAAAAgAAAAAAAIAAA=</HashCode>
       <FileName>IWorksheet.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Dipu.Excel.IBinding">
-    <Position X="7.5" Y="0.5" Width="1.5" />
+    <Position X="7" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAEAAABAAAAAQAAAAAAAAAAAA=</HashCode>
       <FileName>Binding\IBinding.cs</FileName>
     </TypeIdentifier>
   </Interface>

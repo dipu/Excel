@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Dipu.Excel
+﻿namespace Dipu.Excel
 {
     public interface ICell
     {
@@ -19,5 +17,7 @@ namespace Dipu.Excel
         string NumberFormat { get; set; }
 
         IValueConverter ValueConverter { get; set; }
+
+        void Clear();
     }
 }

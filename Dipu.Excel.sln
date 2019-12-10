@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dipu.Excel.Interop", "Dipu.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelAddIn.Interop", "ExcelAddIn.Interop\ExcelAddIn.Interop.csproj", "{6F2E98C0-E1EA-43BC-B703-749F86594AD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dipu.Excel.Headless", "Dipu.Excel.Headless\Dipu.Excel.Headless.csproj", "{1FB26BCD-ADA9-4662-A14E-3B522D96E184}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{6F2E98C0-E1EA-43BC-B703-749F86594AD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F2E98C0-E1EA-43BC-B703-749F86594AD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F2E98C0-E1EA-43BC-B703-749F86594AD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FB26BCD-ADA9-4662-A14E-3B522D96E184}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FB26BCD-ADA9-4662-A14E-3B522D96E184}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FB26BCD-ADA9-4662-A14E-3B522D96E184}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FB26BCD-ADA9-4662-A14E-3B522D96E184}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

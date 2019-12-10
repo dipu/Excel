@@ -1,18 +1,15 @@
-﻿using System;
-using System.Drawing;
-
-namespace Dipu.Excel.Embedded
+﻿namespace Dipu.Excel.Embedded
 {
     public class Cell : ICell
     {
         private object value;
         private Style style;
         private string numberFormat;
+
         private IValueConverter valueConverter;
         private readonly IValueConverter defaultValueConverter = new DefaultValueConverter();
         private string comment;
        
-
         public Cell(IEmbeddedWorksheet worksheet, int row, int column)
         {
             Worksheet = worksheet;
@@ -108,6 +105,13 @@ namespace Dipu.Excel.Embedded
             }
 
             return update;
+        }
+
+        public void Clear()
+        {
+            this.Value = string.Empty;
+            this.Style = null;
+            this.NumberFormat = null;
         }
     }
 }
