@@ -18,44 +18,47 @@ namespace Dipu.Excel.Headless
 
         public IWorksheet[] Worksheets => this.WorksheetList.Cast<IWorksheet>().ToArray();
 
-        public bool Active { get; set; }
+        public bool IsActive { get; private set; }
 
-        public IWorksheet CreateSheet(int? index = null, IWorksheet before = null, IWorksheet after = null)
+        public IWorksheet AddWorksheet(int? index = null, IWorksheet before = null, IWorksheet after = null)
         {
-            var sheet = new Worksheet(this);
+            var worksheet = new Worksheet(this);
 
             if (index != null)
             {
-                this.WorksheetList.Insert(index.Value, sheet);
+                this.WorksheetList.Insert(index.Value, worksheet);
             }
             else if (before != null)
             {
-                this.WorksheetList.Insert(this.WorksheetList.IndexOf(before as Worksheet), sheet);
+                this.WorksheetList.Insert(this.WorksheetList.IndexOf(before as Worksheet), worksheet);
             }
             else if (after != null)
             {
-                this.WorksheetList.Insert(this.WorksheetList.IndexOf(after as Worksheet) + 1, sheet);
+                this.WorksheetList.Insert(this.WorksheetList.IndexOf(after as Worksheet) + 1, worksheet);
             }
             else
             {
-                this.WorksheetList.Add(sheet);
+                this.WorksheetList.Add(worksheet);
             }
 
-            if (this.WorksheetList.All(v => !v.Active))
-            {
-                var worksheet = this.WorksheetList.FirstOrDefault();
-                if (worksheet != null)
-                {
-                    worksheet.Active = true;
-                }
-            }
+            worksheet.Activate();
 
-            return sheet;
+            return worksheet;
         }
 
         public void Close(bool? saveChanges = null, string fileName = null)
         {
             this.AddIn.Remove(this);
+        }
+
+        public void Activate()
+        {
+            foreach (var workbook in this.AddIn.WorkbookList)
+            {
+                workbook.IsActive = false;
+            }
+
+            this.IsActive = true;
         }
     }
 }

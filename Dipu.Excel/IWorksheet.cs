@@ -9,7 +9,7 @@ namespace Dipu.Excel
 
         string Name { get; set; }
 
-        bool Active { get; }
+        bool IsActive { get; }
 
         ICell this[int row, int column]
         {

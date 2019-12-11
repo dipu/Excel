@@ -14,6 +14,14 @@ namespace Dipu.Excel.Headless
 
         public IList<Workbook> WorkbookList { get; }
 
+        public Workbook AddWorkbook()
+        {
+            var workbook = new Workbook(this);
+            this.WorkbookList.Add(workbook);
+            workbook.Activate();
+            return workbook;
+        }
+
         public void Remove(Workbook workbook)
         {
             this.WorkbookList.Remove(workbook);

@@ -18,7 +18,7 @@ namespace Dipu.Excel.Headless
 
         public string Name { get; set; }
 
-        public bool Active { get; set; }
+        public bool IsActive { get; private set; }
         
         public Dictionary<string, Cell> CellByRowColumn { get; }
 
@@ -39,6 +39,16 @@ namespace Dipu.Excel.Headless
 
         public async Task Flush()
         {
+        }
+
+        public void Activate()
+        {
+            foreach (var worksheet in this.Workbook.WorksheetList)
+            {
+                worksheet.IsActive = false;
+            }
+
+            this.IsActive = true;
         }
     }
 }

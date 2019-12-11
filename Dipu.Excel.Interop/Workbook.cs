@@ -26,7 +26,7 @@ namespace Dipu.Excel.Embedded
 
         public InteropWorkbook InteropWorkbook { get; }
 
-        public IWorksheet CreateSheet(int? index, IWorksheet before = null, IWorksheet after = null)
+        public IWorksheet AddWorksheet(int? index, IWorksheet before = null, IWorksheet after = null)
         {
             InteropWorksheet interopWorksheet;
 
@@ -67,7 +67,7 @@ namespace Dipu.Excel.Embedded
 
         public IWorksheet[] Worksheets => this.worksheetByInteropWorksheet.Values.Cast<IWorksheet>().ToArray();
 
-        public bool Active { get; internal set; }
+        public bool IsActive { get; internal set; }
 
         public void Close(bool? saveChanges = null, string fileName = null)
         {

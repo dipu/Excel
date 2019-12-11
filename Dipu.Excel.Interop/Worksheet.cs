@@ -43,11 +43,11 @@ namespace Dipu.Excel.Embedded
 
             interopWorksheet.Change += InteropWorksheet_Change;
 
-            ((Microsoft.Office.Interop.Excel.DocEvents_Event)interopWorksheet).Activate += () => this.Active = true;
-            ((Microsoft.Office.Interop.Excel.DocEvents_Event)interopWorksheet).Deactivate += () => this.Active = false;
+            ((Microsoft.Office.Interop.Excel.DocEvents_Event)interopWorksheet).Activate += () => this.IsActive = true;
+            ((Microsoft.Office.Interop.Excel.DocEvents_Event)interopWorksheet).Deactivate += () => this.IsActive = false;
         }
 
-        public bool Active { get; private set; }
+        public bool IsActive { get; private set; }
 
         private void InteropWorksheet_Change(Range target)
         {

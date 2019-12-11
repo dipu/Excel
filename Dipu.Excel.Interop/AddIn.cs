@@ -48,7 +48,7 @@ namespace Dipu.Excel.Embedded
 
             this.Application.WorkbookActivate += wb =>
             {
-                this.WorkbookByInteropWorkbook[wb].Active = true;
+                this.WorkbookByInteropWorkbook[wb].IsActive = true;
             };
             
 
@@ -57,7 +57,7 @@ namespace Dipu.Excel.Embedded
                 // Could already be gone by the WorkbookBeforeClose event
                 if (this.WorkbookByInteropWorkbook.TryGetValue(wb, out var workbook))
                 {
-                    this.WorkbookByInteropWorkbook[wb].Active = false;
+                    this.WorkbookByInteropWorkbook[wb].IsActive = false;
                 }
             };
 
