@@ -17,5 +17,11 @@ namespace Dipu.Excel
         Task OnBeforeDelete(IWorksheet worksheet);
 
         Task OnHandle(string handle);
+
+        Task OnLogin();
+
+        Task OnLogout();
+
+        bool IsEnabled(string controlId, string controlTag);
     }
 }
