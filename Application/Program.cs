@@ -43,7 +43,7 @@ namespace Application
             this.CanNotWriteCellStyle = new Style(Color.MistyRose, Color.Black);
             this.ChangedCellStyle = new Style(Color.DeepSkyBlue, Color.Black);
 
-            var sheet = workbook.CreateSheet();
+            var sheet = workbook.AddWorksheet();
             sheet.Name = $"{workbook.Worksheets.Length}";
 
             for (var i = 0; i < 50; i++)
@@ -110,6 +110,19 @@ namespace Application
         public Task OnBeforeDelete(IWorksheet worksheet)
         {
             return Task.CompletedTask;
+        }
+
+        public async Task OnLogin()
+        {
+        }
+
+        public async Task OnLogout()
+        {
+        }
+
+        public bool IsEnabled(string controlId, string controlTag)
+        {
+            return true;
         }
     }
 }
