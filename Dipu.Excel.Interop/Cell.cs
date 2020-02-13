@@ -9,7 +9,7 @@
         private IValueConverter valueConverter;
         private readonly IValueConverter defaultValueConverter = new DefaultValueConverter();
         private string comment;
-       
+
         public Cell(IEmbeddedWorksheet worksheet, int row, int column)
         {
             Worksheet = worksheet;
@@ -30,7 +30,7 @@
         public int Column { get; }
 
         object ICell.Value { get => this.Value; set => this.Value = value; }
-        
+
         public object Value
         {
             get => this.value;
@@ -62,7 +62,7 @@
             get => style;
             set
             {
-                if (!Equals(this.style, value))
+                if (!this.style?.Equals(value) ?? value != null)
                 {
                     this.style = value;
                     this.Worksheet.AddDirtyStyle(this);
