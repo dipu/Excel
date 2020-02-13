@@ -34,6 +34,24 @@ namespace Dipu.Excel.Embedded
                 }
             };
 
+            ((AppEvents_Event)this.Application).WorkbookOpen += async interopWorkbook =>
+            {
+                var workbook = this.New(interopWorkbook);
+                for (var i = 1; i <= interopWorkbook.Worksheets.Count; i++)
+                {
+                    var interopWorksheet = (InteropWorksheet)interopWorkbook.Worksheets[i];
+                    workbook.New(interopWorksheet);
+                }
+
+                var worksheets = workbook.Worksheets;
+                await this.Program.OnNew(workbook);
+                foreach (var worksheet in worksheets)
+                {
+                    await program.OnNew(worksheet);
+                }
+            };
+
+
             void WorkbookBeforeClose(InteropWorkbook interopWorkbook, ref bool cancel)
             {
                 if (this.WorkbookByInteropWorkbook.TryGetValue(interopWorkbook, out var workbook))
@@ -48,7 +66,12 @@ namespace Dipu.Excel.Embedded
 
             this.Application.WorkbookActivate += wb =>
             {
-                this.WorkbookByInteropWorkbook[wb].IsActive = true;
+                if (!this.WorkbookByInteropWorkbook.TryGetValue(wb, out var workbook))
+                {
+                    workbook = this.New(wb);
+                }
+
+                workbook.IsActive = true;
             };
             
 

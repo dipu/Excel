@@ -6,6 +6,8 @@ namespace Dipu.Excel.Headless
 {
     public class Worksheet : IWorksheet
     {
+        IWorkbook IWorksheet.Workbook => this.Workbook;
+
         public Workbook Workbook { get; }
 
         public Worksheet(Workbook workbook)

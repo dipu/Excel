@@ -16,7 +16,7 @@ namespace Dipu.Excel
 
         Task OnBeforeDelete(IWorksheet worksheet);
 
-        Task OnHandle(string handle);
+        Task OnHandle(string handle, object argument = null);
 
         Task OnLogin();
 

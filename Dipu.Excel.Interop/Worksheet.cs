@@ -75,6 +75,8 @@ namespace Dipu.Excel.Embedded
             }
         }
 
+        IWorkbook IWorksheet.Workbook => this.Workbook;
+        
         public Workbook Workbook { get; set; }
 
         public InteropWorksheet InteropWorksheet { get; set; }

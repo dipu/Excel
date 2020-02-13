@@ -7,6 +7,8 @@ namespace Dipu.Excel
     {
         event EventHandler<CellChangedEvent> CellsChanged;
 
+        IWorkbook Workbook { get; }
+
         string Name { get; set; }
 
         bool IsActive { get; }
