@@ -80,10 +80,13 @@ namespace Dipu.Excel
                     if (binding.TwoWayBinding)
                     {
                         binding.ToDomain(cell);
-                        
+
                         if (this.changedStyle != null)
                         {
-                            this.changedCells.Add(cell, cell.Style);
+                            if (!this.changedCells.ContainsKey(cell))
+                            {
+                                this.changedCells.Add(cell, cell.Style);
+                            }
                             cell.Style = this.changedStyle;
                         }
                     }
