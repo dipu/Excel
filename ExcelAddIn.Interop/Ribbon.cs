@@ -24,7 +24,7 @@ namespace ExcelAddInLocal
 
         public string GetCustomUI(string ribbonID)
         {
-            return GetResourceText("ExcelAddInLocal.Ribbon.xml");
+            return GetResourceText("ExcelAddIn.Interop.Ribbon.xml");
         }
 
         #endregion

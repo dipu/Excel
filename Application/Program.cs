@@ -23,9 +23,9 @@ namespace Application
             this.AddIn = addIn;
         }
 
-        public async Task OnHandle(string controlId)
+        public async Task OnHandle(string handle, params object[] argument)
         {
-            switch (controlId)
+            switch (handle)
             {
                 case Actions.Dosomething:
                     MessageBox.Show("Boom!!!!");
@@ -76,6 +76,12 @@ namespace Application
             sheet[0, 0].Comment = "De Poppa!";
 
             sheet[10, 2].Style = this.CanNotWriteCellStyle;
+
+            sheet[3, 12].Value = "Walter";
+            sheet[3, 13].Value = "Martien";
+            sheet[3, 14].Value = "Koen";
+
+            sheet[0, 12].Options = new Range(row: 2, column: 12, columns: 3);
 
             await sheet.Flush();
 

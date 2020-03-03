@@ -20,6 +20,8 @@ namespace Dipu.Excel.Headless
 
         public bool IsActive { get; private set; }
 
+        public List<Range> NamedRanges { get; } = new List<Range>();
+
         public IWorksheet AddWorksheet(int? index = null, IWorksheet before = null, IWorksheet after = null)
         {
             var worksheet = new Worksheet(this);
@@ -61,9 +63,9 @@ namespace Dipu.Excel.Headless
             this.IsActive = true;
         }
 
-        public List<NamedRange> GetNamedRanges()
+        public Range[] GetNamedRanges()
         {
-            throw new System.NotImplementedException();
+            return this.NamedRanges.ToArray();
         }
     }
 }

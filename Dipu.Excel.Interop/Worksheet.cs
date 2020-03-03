@@ -17,6 +17,8 @@ namespace Dipu.Excel.Embedded
         void AddDirtyStyle(Cell cell);
 
         void AddDirtyNumberFormat(Cell cell);
+
+        void AddDirtyOptions(Cell cell);
     }
 
     public class Worksheet : IEmbeddedWorksheet
@@ -29,6 +31,8 @@ namespace Dipu.Excel.Embedded
 
         private HashSet<Cell> DirtyStyleCells { get; set; }
 
+        private HashSet<Cell> DirtyOptionCells { get; set; }
+
         private HashSet<Cell> DirtyNumberFormatCells { get; set; }
 
         public Worksheet(Workbook workbook, InteropWorksheet interopWorksheet)
@@ -39,6 +43,7 @@ namespace Dipu.Excel.Embedded
             this.DirtyValueCells = new HashSet<Cell>();
             this.DirtyCommentCells = new HashSet<Cell>();
             this.DirtyStyleCells = new HashSet<Cell>();
+            this.DirtyOptionCells = new HashSet<Cell>();
             this.DirtyNumberFormatCells = new HashSet<Cell>();
 
             interopWorksheet.Change += InteropWorksheet_Change;
@@ -49,10 +54,10 @@ namespace Dipu.Excel.Embedded
 
         public bool IsActive { get; private set; }
 
-        private void InteropWorksheet_Change(Range target)
+        private void InteropWorksheet_Change(Microsoft.Office.Interop.Excel.Range target)
         {
             List<Cell> cells = null;
-            foreach (Range targetCell in target.Cells)
+            foreach (Microsoft.Office.Interop.Excel.Range targetCell in target.Cells)
             {
                 var row = targetCell.Row - 1;
                 var column = targetCell.Column - 1;
@@ -113,6 +118,9 @@ namespace Dipu.Excel.Embedded
 
             this.RenderStyle(this.DirtyStyleCells);
             this.DirtyStyleCells = new HashSet<Cell>();
+
+            this.SetOptions(this.DirtyOptionCells);
+            this.DirtyOptionCells = new HashSet<Cell>();
         }
         
         public void RenderValue(IEnumerable<Cell> cells)
@@ -152,7 +160,7 @@ namespace Dipu.Excel.Embedded
         {
             foreach (var cell in cells)
             {
-                var partCell = (Range)this.InteropWorksheet.Cells[cell.Row + 1, cell.Column + 1];
+                var partCell = (Microsoft.Office.Interop.Excel.Range)this.InteropWorksheet.Cells[cell.Row + 1, cell.Column + 1];
 
                 if (partCell.Comment == null)
                 {
@@ -208,6 +216,49 @@ namespace Dipu.Excel.Embedded
             }
         }
 
+        public void SetOptions(IEnumerable<Cell> cells)
+        {
+            foreach (var chunk in cells.Chunks((v, w) => Equals(v.Options, w.Options)))
+            {
+                var fromRow = chunk.First().First().Row;
+                var fromColumn = chunk.First().First().Column;
+
+                var toRow = chunk.Last().Last().Row;
+                var toColumn = chunk.Last().Last().Column;
+
+                var from = this.InteropWorksheet.Cells[fromRow + 1, fromColumn + 1];
+                var to = this.InteropWorksheet.Cells[toRow + 1, toColumn + 1];
+                var range = this.InteropWorksheet.Range[from, to];
+
+                var cc = chunk[0][0];
+                if (cc.Options != null)
+                {
+                    var validationRange = cc.Options.Name;
+                    if (string.IsNullOrEmpty(validationRange))
+                    {
+
+
+                        if (cc.Options.Columns.HasValue)
+                        {
+                            validationRange = $"${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + 1}:${ExcelColumnFromNumber(cc.Options.Column + cc.Options.Columns.Value)}${cc.Options.Row + 1 }";
+                        }
+
+                        if (cc.Options.Rows.HasValue)
+                        {
+                            validationRange = $"${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + 1}:${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + cc.Options.Rows}";
+                        }
+                    }
+
+                    range.Validation.Delete();
+                    range.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop, $"={validationRange}");
+                }
+                else
+                {
+                    range.Validation.Delete();
+                }
+            }
+        }
+
         public int Index => this.InteropWorksheet.Index;
 
         public void AddDirtyNumberFormat(Cell cell)
@@ -228,6 +279,26 @@ namespace Dipu.Excel.Embedded
         public void AddDirtyStyle(Cell cell)
         {
             this.DirtyStyleCells.Add(cell);
+        }
+
+        public void AddDirtyOptions(Cell cell)
+        {
+            this.DirtyOptionCells.Add(cell);
+        }
+
+
+        public static string ExcelColumnFromNumber(int column)
+        {
+            string columnString = "";
+            decimal columnNumber = column;
+            while (columnNumber > 0)
+            {
+                decimal currentLetterNumber = (columnNumber - 1) % 26;
+                char currentLetter = (char)(currentLetterNumber + 65);
+                columnString = currentLetter + columnString;
+                columnNumber = (columnNumber - (currentLetterNumber + 1)) / 26;
+            }
+            return columnString;
         }
     }
 }

@@ -26,7 +26,9 @@ namespace Dipu.Excel.Headless
         public string NumberFormat { get; set; }
         
         public IValueConverter ValueConverter { get; set; }
-        
+
+        public Range Options { get; set; }
+
         public void Clear()
         {
             this.Value = string.Empty;

@@ -5,6 +5,7 @@
         private object value;
         private Style style;
         private string numberFormat;
+        private Range options;
 
         private IValueConverter valueConverter;
         private readonly IValueConverter defaultValueConverter = new DefaultValueConverter();
@@ -88,6 +89,22 @@
             get => valueConverter ?? this.defaultValueConverter;
             set => valueConverter = value;
         }
+
+        public Range Options
+        {
+            get => options;
+            set
+            {
+                if (!Equals(this.options, value))
+                {
+                    this.options = value;
+                    this.Worksheet.AddDirtyOptions(this);
+                }
+            }
+        }
+
+
+
 
         public override string ToString()
         {

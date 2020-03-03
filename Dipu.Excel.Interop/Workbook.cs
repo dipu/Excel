@@ -28,9 +28,9 @@ namespace Dipu.Excel.Embedded
         /// Return a Zero-Based Row, Column NamedRanges
         /// </summary>
         /// <returns></returns>
-        public List<NamedRange> GetNamedRanges()
+        public Range[] GetNamedRanges()
         {
-            var ranges = new List<NamedRange>();
+            var ranges = new List<Range>();
 
             Microsoft.Office.Interop.Excel.Names names = this.InteropWorkbook.Names;
 
@@ -42,15 +42,7 @@ namespace Dipu.Excel.Embedded
 
                     if (refersToRange != null)
                     {
-                        ranges.Add(new NamedRange()
-                        {
-                            WorksheetName = refersToRange.Worksheet.Name,
-                            Name = namedRange.Name,
-                            Row = refersToRange.Row - 1,
-                            Column = refersToRange.Column - 1,
-                            Rows = refersToRange.Rows.Count,
-                            Columns = refersToRange.Columns.Count,
-                        });
+                        ranges.Add(new Range(refersToRange.Row - 1,refersToRange.Column - 1,refersToRange.Rows.Count,refersToRange.Columns.Count,namedRange.Name));
                     }
                 }
                 catch 
@@ -59,7 +51,7 @@ namespace Dipu.Excel.Embedded
                 }
             }
 
-            return ranges;
+            return ranges.ToArray();
         }
 
         public IWorksheet AddWorksheet(int? index, IWorksheet before = null, IWorksheet after = null)

@@ -1,17 +1,31 @@
-﻿namespace Dipu.Excel
+﻿using System;
+
+namespace Dipu.Excel
 {
-    public struct NamedRange
+    public class Range
     {
-        public string WorksheetName { get; set; }
+        public Range(int row, int column, int? rows = null, int? columns = null, string name = null)
+        {
+            this.Row = row;
+            this.Column = column;
+            this.Rows = rows;
+            this.Columns = columns;
+            this.Name = name;
 
-        public string Name { get; set; }
+            if(this.Columns == null && this.Rows == null)
+            {
+                throw new ArgumentException("Either Columns or Rows is required.");
+            }
+        }
 
-        public int Row { get; set; }
+        public string Name { get; }
 
-        public int Column { get; set; }
+        public int Row { get; }
 
-        public int Rows { get; set; }
+        public int Column { get; }
 
-        public int Columns { get; set; }
+        public int? Rows { get; }
+
+        public int? Columns { get; }
     }
 }

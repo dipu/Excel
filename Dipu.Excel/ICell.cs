@@ -7,8 +7,10 @@
         int Row { get; }
 
         int Column { get; }
-
+                
         object Value { get; set; }
+
+        Range Options { get; set; }
 
         string Comment { get; set; }
 
