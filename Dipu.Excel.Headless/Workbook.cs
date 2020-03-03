@@ -60,5 +60,10 @@ namespace Dipu.Excel.Headless
 
             this.IsActive = true;
         }
+
+        public List<NamedRange> GetNamedRanges()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

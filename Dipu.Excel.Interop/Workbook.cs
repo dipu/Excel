@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 namespace Dipu.Excel.Embedded
 {
     using System;
@@ -25,6 +23,44 @@ namespace Dipu.Excel.Embedded
         public AddIn AddIn { get; }
 
         public InteropWorkbook InteropWorkbook { get; }
+
+        /// <summary>
+        /// Return a Zero-Based Row, Column NamedRanges
+        /// </summary>
+        /// <returns></returns>
+        public List<NamedRange> GetNamedRanges()
+        {
+            var ranges = new List<NamedRange>();
+
+            Microsoft.Office.Interop.Excel.Names names = this.InteropWorkbook.Names;
+
+            foreach (Microsoft.Office.Interop.Excel.Name namedRange in names)
+            {
+                try
+                {
+                    Microsoft.Office.Interop.Excel.Range refersToRange = namedRange.RefersToRange;
+
+                    if (refersToRange != null)
+                    {
+                        ranges.Add(new NamedRange()
+                        {
+                            WorksheetName = refersToRange.Worksheet.Name,
+                            Name = namedRange.Name,
+                            Row = refersToRange.Row - 1,
+                            Column = refersToRange.Column - 1,
+                            Rows = refersToRange.Rows.Count,
+                            Columns = refersToRange.Columns.Count,
+                        });
+                    }
+                }
+                catch 
+                { 
+                    // RefersToRange can throw exception
+                }
+            }
+
+            return ranges;
+        }
 
         public IWorksheet AddWorksheet(int? index, IWorksheet before = null, IWorksheet after = null)
         {

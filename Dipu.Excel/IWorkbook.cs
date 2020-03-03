@@ -1,4 +1,6 @@
-﻿namespace Dipu.Excel
+﻿using System.Collections.Generic;
+
+namespace Dipu.Excel
 {
     public interface IWorkbook
     {
@@ -9,5 +11,7 @@
         void Close(bool? saveChanges = null, string fileName = null);
 
         IWorksheet AddWorksheet(int? index = null, IWorksheet before = null, IWorksheet after = null);
+
+        List<NamedRange> GetNamedRanges();
     }
 }
