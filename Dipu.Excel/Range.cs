@@ -1,4 +1,6 @@
-﻿namespace Dipu.Excel
+﻿using System.Collections.Generic;
+
+namespace Dipu.Excel
 {
     public struct NamedRange
     {
@@ -12,6 +14,6 @@
 
         public int Rows { get; set; }
 
-        public int Columns { get; set; }
+        public int Columns { get; set; }      
     }
 }
