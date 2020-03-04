@@ -236,21 +236,18 @@ namespace Dipu.Excel.Embedded
                     var validationRange = cc.Options.Name;
                     if (string.IsNullOrEmpty(validationRange))
                     {
-
-
                         if (cc.Options.Columns.HasValue)
                         {
                             validationRange = $"${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + 1}:${ExcelColumnFromNumber(cc.Options.Column + cc.Options.Columns.Value)}${cc.Options.Row + 1 }";
                         }
-
-                        if (cc.Options.Rows.HasValue)
+                        else if (cc.Options.Rows.HasValue)
                         {
                             validationRange = $"${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + 1}:${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + cc.Options.Rows}";
                         }
                     }
 
                     range.Validation.Delete();
-                    range.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop, $"={validationRange}");
+                    range.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop, null, $"={validationRange}");
                 }
                 else
                 {

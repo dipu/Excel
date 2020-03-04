@@ -1,8 +1,8 @@
-using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
 {
+    using System;
     using System.Drawing;
     using System.Threading.Tasks;
     using Dipu.Excel;
@@ -28,7 +28,7 @@ namespace Application
             switch (handle)
             {
                 case Actions.Dosomething:
-                    MessageBox.Show("Boom!!!!");
+                    Console.WriteLine("Boom!");
                     break;
             }
         }

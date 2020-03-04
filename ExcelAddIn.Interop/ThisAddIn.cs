@@ -5,10 +5,10 @@ using System.Windows.Forms;
 using Dipu.Excel.Embedded;
 using Application;
 using Microsoft.Extensions.DependencyInjection;
-using Nito.AsyncEx;
 using AppEvents_Event = Microsoft.Office.Interop.Excel.AppEvents_Event;
 using InteropWorkbook = Microsoft.Office.Interop.Excel.Workbook;
 using InteropWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
+using System.Threading.Tasks;
 
 namespace ExcelAddInLocal
 {
@@ -16,7 +16,7 @@ namespace ExcelAddInLocal
     {
         private AddIn addIn;
 
-        private void ThisAddIn_Startup(object sender, System.EventArgs e) => AsyncContext.Run(async () =>
+        private async void ThisAddIn_Startup(object sender, System.EventArgs e) => await Task.Run(async () =>
         {
             var serviceProvider = new ServiceCollection()
                 // TODO: use DI logging
@@ -29,7 +29,7 @@ namespace ExcelAddInLocal
             await program.OnStart(addIn);
         });
 
-        private void ThisAddIn_Shutdown(object sender, System.EventArgs e) => AsyncContext.Run(async () =>
+        private async void ThisAddIn_Shutdown(object sender, System.EventArgs e) => await Task.Run(async () =>
         {
             await this.addIn.Program.OnStop();
         });

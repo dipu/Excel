@@ -5,8 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 using Dipu.Excel.Embedded;
-using Nito.AsyncEx;
 using Office = Microsoft.Office.Core;
 
 namespace ExcelAddInLocal
@@ -50,7 +50,7 @@ namespace ExcelAddInLocal
 
         #region Ribbon Callbacks
 
-        public void OnClick(Office.IRibbonControl control) => AsyncContext.Run(async () =>
+        public async void OnClick(Office.IRibbonControl control) => await Task.Run(async () =>
         {
             if (this.AddIn != null)
             {
