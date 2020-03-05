@@ -85,7 +85,8 @@ namespace Application
             sheet[3, 13].Value = "Martien";
             sheet[3, 14].Value = "Koen";
 
-            sheet[0, 12].Options = new Range(row: 2, column: 12, columns: 3, worksheet: sheet);
+            sheet[2, 11].Value = "Person:";
+            sheet[2, 12].Options = new Range(row: 3, column: 12, columns: 3, worksheet: sheet);
 
             if(!binderByWorksheet.TryGetValue(sheet, out var binder))
             {

@@ -255,7 +255,7 @@
     <ManifestKeyFile>ExcelAddIn.Interop_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>C14D1AE26A20C4C3EC676AA4584B792C9E0BB174</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>141F5FB37147473E6DDE5BAB07E3292666AA2851</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -32,14 +32,11 @@ namespace Dipu.Excel.Embedded
         {
             var ranges = new List<Range>();
 
-            Microsoft.Office.Interop.Excel.Names names = this.InteropWorkbook.Names;
-
-            foreach (Microsoft.Office.Interop.Excel.Name namedRange in names)
+            foreach (Microsoft.Office.Interop.Excel.Name namedRange in this.InteropWorkbook.Names)
             {
                 try
                 {
-                    Microsoft.Office.Interop.Excel.Range refersToRange = namedRange.RefersToRange;
-
+                    var refersToRange = namedRange.RefersToRange;
                     if (refersToRange != null)
                     {
                         ranges.Add(new Range(refersToRange.Row - 1,refersToRange.Column - 1,refersToRange.Rows.Count,refersToRange.Columns.Count, name: namedRange.Name));
