@@ -42,7 +42,7 @@ namespace Dipu.Excel.Embedded
 
                     if (refersToRange != null)
                     {
-                        ranges.Add(new Range(refersToRange.Row - 1,refersToRange.Column - 1,refersToRange.Rows.Count,refersToRange.Columns.Count,namedRange.Name));
+                        ranges.Add(new Range(refersToRange.Row - 1,refersToRange.Column - 1,refersToRange.Rows.Count,refersToRange.Columns.Count, name: namedRange.Name));
                     }
                 }
                 catch 

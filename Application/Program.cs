@@ -1,20 +1,24 @@
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Application
 {
     using System;
+    using System.Collections.Generic;
     using System.Drawing;
+    using System.Linq;
     using System.Threading.Tasks;
     using Dipu.Excel;
 
     public class Program : IProgram
     {
-        public Program(ServiceProvider serviceProvider)
+        private readonly Dictionary<IWorksheet, Binder> binderByWorksheet;
+
+        public Program(IServiceLocator serviceLocator)
         {
-            this.ServiceProvider = serviceProvider;
+            this.ServiceLocator = serviceLocator;
+
+            this.binderByWorksheet = new Dictionary<IWorksheet, Binder>();
         }
 
-        public ServiceProvider ServiceProvider { get; }
+        public IServiceLocator ServiceLocator { get; }
 
         public IAddIn AddIn { get; private set; }
 
@@ -81,7 +85,19 @@ namespace Application
             sheet[3, 13].Value = "Martien";
             sheet[3, 14].Value = "Koen";
 
-            sheet[0, 12].Options = new Range(row: 2, column: 12, columns: 3);
+            sheet[0, 12].Options = new Range(row: 2, column: 12, columns: 3, worksheet: sheet);
+
+            if(!binderByWorksheet.TryGetValue(sheet, out var binder))
+            {
+                binder = new Binder(sheet);
+                binderByWorksheet.Add(sheet, binder);
+            }
+
+            var binding = new Binding(toDomain: cell => {
+                string message = $"Binder toDomain: {cell.Row}:{cell.Column}";
+            });
+            binder.Set(5, 12, binding);
+
 
             await sheet.Flush();
 
@@ -94,7 +110,8 @@ namespace Application
 
                 ((IWorksheet)sender).Flush();
 
-                //MessageBox.Show($"Cells changed: {string.Join(",", v.Cells.Select(w => $"{w.Row}:{w.Column}"))}");
+                string message = $"Cells changed: {string.Join(",", v.Cells.Select(w => $"{w.Row}:{w.Column}"))}";
+                this.ServiceLocator.Alerter.Alert(message);
             };
         }
 

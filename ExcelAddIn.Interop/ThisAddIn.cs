@@ -4,7 +4,6 @@ using System.Threading;
 using System.Windows.Forms;
 using Dipu.Excel.Embedded;
 using Application;
-using Microsoft.Extensions.DependencyInjection;
 using AppEvents_Event = Microsoft.Office.Interop.Excel.AppEvents_Event;
 using InteropWorkbook = Microsoft.Office.Interop.Excel.Workbook;
 using InteropWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
@@ -14,16 +13,13 @@ namespace ExcelAddInLocal
 {
     public partial class ThisAddIn
     {
+        private ServiceLocator serviceLocator;
         private AddIn addIn;
 
         private async void ThisAddIn_Startup(object sender, System.EventArgs e) => await Task.Run(async () =>
         {
-            var serviceProvider = new ServiceCollection()
-                // TODO: use DI logging
-                //.AddLogging()
-                .BuildServiceProvider();
-
-            var program = new Program(serviceProvider);
+            this.serviceLocator = new ServiceLocator();
+            var program = new Program(serviceLocator);
             this.addIn = new AddIn(this.Application, program);
             this.Ribbon.AddIn = this.addIn;
             await program.OnStart(addIn);

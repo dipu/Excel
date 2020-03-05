@@ -238,16 +238,16 @@ namespace Dipu.Excel.Embedded
                     {
                         if (cc.Options.Columns.HasValue)
                         {
-                            validationRange = $"${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + 1}:${ExcelColumnFromNumber(cc.Options.Column + cc.Options.Columns.Value)}${cc.Options.Row + 1 }";
+                            validationRange = $"{cc.Options.Worksheet.Name}:${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + 1}:${ExcelColumnFromNumber(cc.Options.Column + cc.Options.Columns.Value)}${cc.Options.Row + 1 }";
                         }
                         else if (cc.Options.Rows.HasValue)
                         {
-                            validationRange = $"${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + 1}:${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + cc.Options.Rows}";
+                            validationRange = $"{cc.Options.Worksheet.Name}:${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + 1}:${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + cc.Options.Rows}";
                         }
                     }
 
                     range.Validation.Delete();
-                    range.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop, null, $"={validationRange}");
+                    //range.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop, Type.Missing, $"={validationRange}", Type.Missing);
                 }
                 else
                 {
@@ -282,8 +282,7 @@ namespace Dipu.Excel.Embedded
         {
             this.DirtyOptionCells.Add(cell);
         }
-
-
+        
         public static string ExcelColumnFromNumber(int column)
         {
             string columnString = "";
