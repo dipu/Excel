@@ -47,8 +47,13 @@ namespace Dipu.Excel.Embedded
             this.DirtyNumberFormatCells = new HashSet<Cell>();
 
             interopWorksheet.Change += InteropWorksheet_Change;
+            
+            ((Microsoft.Office.Interop.Excel.DocEvents_Event)interopWorksheet).Activate += () =>
+            {
+                this.IsActive = true;
+                this.SheetActivated?.Invoke(this, this.Name);
+            };
 
-            ((Microsoft.Office.Interop.Excel.DocEvents_Event)interopWorksheet).Activate += () => this.IsActive = true;
             ((Microsoft.Office.Interop.Excel.DocEvents_Event)interopWorksheet).Deactivate += () => this.IsActive = false;
         }
 
@@ -89,6 +94,8 @@ namespace Dipu.Excel.Embedded
         public string Name { get => this.InteropWorksheet.Name; set => this.InteropWorksheet.Name = value; }
 
         public event EventHandler<CellChangedEvent> CellsChanged;
+
+        public event EventHandler<string> SheetActivated;
 
         public ICell this[int row, int column]
         {
