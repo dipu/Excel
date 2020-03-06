@@ -114,5 +114,10 @@ namespace Dipu.Excel
                 this.changedCells.Clear();
             }
         }
+
+        public bool ExistBinding(int row, int column)
+        {
+            return this.bindingCells.Any(v => v.Row == row && v.Column == column);
+        }
     }
 }
