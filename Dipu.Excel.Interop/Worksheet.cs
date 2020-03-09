@@ -19,6 +19,8 @@ namespace Dipu.Excel.Embedded
         void AddDirtyNumberFormat(Cell cell);
 
         void AddDirtyOptions(Cell cell);
+
+        void AddDirtyRow(Row row);
     }
 
     public class Worksheet : IEmbeddedWorksheet
@@ -39,6 +41,8 @@ namespace Dipu.Excel.Embedded
 
         private HashSet<Cell> DirtyNumberFormatCells { get; set; }
 
+        private HashSet<Row> DirtyRows { get; set; }
+
         public Worksheet(Workbook workbook, InteropWorksheet interopWorksheet)
         {
             this.Workbook = workbook;
@@ -51,9 +55,10 @@ namespace Dipu.Excel.Embedded
             this.DirtyStyleCells = new HashSet<Cell>();
             this.DirtyOptionCells = new HashSet<Cell>();
             this.DirtyNumberFormatCells = new HashSet<Cell>();
+            this.DirtyRows = new HashSet<Row>();
 
             interopWorksheet.Change += InteropWorksheet_Change;
-            
+
             ((Microsoft.Office.Interop.Excel.DocEvents_Event)interopWorksheet).Activate += () =>
             {
                 this.IsActive = true;
@@ -92,7 +97,7 @@ namespace Dipu.Excel.Embedded
         }
 
         IWorkbook IWorksheet.Workbook => this.Workbook;
-        
+
         public Workbook Workbook { get; set; }
 
         public InteropWorksheet InteropWorksheet { get; set; }
@@ -170,9 +175,12 @@ namespace Dipu.Excel.Embedded
 
             this.SetOptions(this.DirtyOptionCells);
             this.DirtyOptionCells = new HashSet<Cell>();
+
+            this.UpdateRows(this.DirtyRows);
+            this.DirtyRows = new HashSet<Row>();
         }
-        
-        public void RenderValue(IEnumerable<Cell> cells)
+
+        private void RenderValue(IEnumerable<Cell> cells)
         {
             foreach (var chunk in cells.Chunks((v, w) => true))
             {
@@ -205,7 +213,7 @@ namespace Dipu.Excel.Embedded
             }
         }
 
-        public void RenderComments(IEnumerable<Cell> cells)
+        private void RenderComments(IEnumerable<Cell> cells)
         {
             foreach (var cell in cells)
             {
@@ -221,7 +229,7 @@ namespace Dipu.Excel.Embedded
             }
         }
 
-        public void RenderStyle(IEnumerable<Cell> cells)
+        private void RenderStyle(IEnumerable<Cell> cells)
         {
             foreach (var chunk in cells.Chunks((v, w) => Equals(v.Style, w.Style)))
             {
@@ -238,7 +246,7 @@ namespace Dipu.Excel.Embedded
                 var cc = chunk[0][0];
                 if (cc.Style != null)
                 {
-                    range.Interior.Color =  ColorTranslator.ToOle(chunk[0][0].Style.BackgroundColor);
+                    range.Interior.Color = ColorTranslator.ToOle(chunk[0][0].Style.BackgroundColor);
                 }
                 else
                 {
@@ -247,7 +255,7 @@ namespace Dipu.Excel.Embedded
             }
         }
 
-        public void RenderNumberFormat(IEnumerable<Cell> cells)
+        private void RenderNumberFormat(IEnumerable<Cell> cells)
         {
             foreach (var chunk in cells.Chunks((v, w) => Equals(v.NumberFormat, w.NumberFormat)))
             {
@@ -265,7 +273,7 @@ namespace Dipu.Excel.Embedded
             }
         }
 
-        public void SetOptions(IEnumerable<Cell> cells)
+        private void SetOptions(IEnumerable<Cell> cells)
         {
             foreach (var chunk in cells.Chunks((v, w) => Equals(v.Options, w.Options)))
             {
@@ -305,6 +313,39 @@ namespace Dipu.Excel.Embedded
             }
         }
 
+        private void UpdateRows(HashSet<Row> dirtyRows)
+        {
+            var chunks = dirtyRows.OrderBy(w => w.Index).Aggregate(new List<IList<Row>> { new List<Row>() },
+                        (acc, w) =>
+                        {
+                            var list = acc[acc.Count - 1];
+                            if (list.Count == 0 || (list[list.Count - 1].Hidden == w.Hidden))
+                            {
+                                list.Add(w);
+                            }
+                            else
+                            {
+                                list = new List<Row> { w };
+                                acc.Add(list);
+                            }
+
+                            return acc;
+                        });
+
+            foreach (var chunk in chunks.Where(v => v.Count > 0))
+            {
+                var fromChunk = chunk.First();
+                var toChunk = chunk.Last();
+                var hidden = fromChunk.Hidden;
+
+                string from = $"$A${(fromChunk.Index + 1)}";
+                string to = $"$A${(toChunk.Index + 1)}";
+
+                var range = this.InteropWorksheet.Range[from, to];
+                range.EntireRow.Hidden = hidden;
+            }
+        }
+
         public int Index => this.InteropWorksheet.Index;
 
         public void AddDirtyNumberFormat(Cell cell)
@@ -331,7 +372,12 @@ namespace Dipu.Excel.Embedded
         {
             this.DirtyOptionCells.Add(cell);
         }
-        
+
+        public void AddDirtyRow(Row row)
+        {
+            this.DirtyRows.Add(row);
+        }
+
         public static string ExcelColumnFromNumber(int column)
         {
             string columnString = "";

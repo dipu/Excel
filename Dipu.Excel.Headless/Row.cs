@@ -11,5 +11,7 @@
         public IWorksheet Worksheet { get; }
 
         public int Index { get; }
+
+        public bool Hidden { get; set; }
     }
 }

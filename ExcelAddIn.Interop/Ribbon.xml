@@ -5,6 +5,7 @@
       <tab id="dipuTab" label="Dipu" insertAfterMso="TabFile">
         <group id="actionGroup" label="Actions">
             <button id="doSomething" getLabel="GetDoSomethingLabel" imageMso="MicrosoftVisualFoxPro" onAction="OnClick" />
+          <button id="hide" label="Hide" onAction="OnClick" />
         </group>
       </tab>
     </tabs>

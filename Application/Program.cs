@@ -34,6 +34,18 @@ namespace Application
                 case Actions.Dosomething:
                     Console.WriteLine("Boom!");
                     break;
+
+                case Actions.Hide:
+                    var worksheet = this.AddIn.Workbooks.First(v => v.IsActive).Worksheets.First(v => v.IsActive);
+
+                    foreach(var index in Enumerable.Range(5, 5))
+                    {
+                        worksheet.Row(index).Hidden = true;
+                    }
+
+                    await worksheet.Flush().ConfigureAwait(true);
+
+                    break;
             }
         }
 
@@ -88,13 +100,14 @@ namespace Application
             sheet[2, 11].Value = "Person:";
             sheet[2, 12].Options = new Range(row: 3, column: 12, columns: 3, worksheet: sheet);
 
-            if(!binderByWorksheet.TryGetValue(sheet, out var binder))
+            if (!binderByWorksheet.TryGetValue(sheet, out var binder))
             {
                 binder = new Binder(sheet);
                 binderByWorksheet.Add(sheet, binder);
             }
 
-            var binding = new Binding(toDomain: cell => {
+            var binding = new Binding(toDomain: cell =>
+            {
                 string message = $"Binder toDomain: {cell.Row}:{cell.Column}";
             });
             binder.Set(5, 12, binding);

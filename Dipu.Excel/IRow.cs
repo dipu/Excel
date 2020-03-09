@@ -5,5 +5,7 @@
         IWorksheet Worksheet { get; }
 
         int Index { get; }
+
+        bool Hidden { get; set; }
     }
 }
