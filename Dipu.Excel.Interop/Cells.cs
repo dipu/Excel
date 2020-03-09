@@ -16,7 +16,7 @@ namespace Dipu.Excel.Embedded
                         (acc, w) =>
                         {
                             var list = acc[acc.Count - 1];
-                            if (list.Count == 0 || (list[list.Count - 1].Column + 1 == w.Column && combine(list[list.Count - 1], w)))
+                            if (list.Count == 0 || (list[list.Count - 1].Column.Index + 1 == w.Column.Index && combine(list[list.Count - 1], w)))
                             {
                                 list.Add(w);
                             }
@@ -37,7 +37,7 @@ namespace Dipu.Excel.Embedded
                         (acc, w) =>
                         {
                             var list = acc[acc.Count - 1];
-                            if (list.Count == 0 || (list[list.Count - 1].Count == w.Count && list[list.Count - 1][0].Row + 1 == w[0].Row && combine(list[list.Count - 1][0], w[0])))
+                            if (list.Count == 0 || (list[list.Count - 1].Count == w.Count && list[list.Count - 1][0].Row.Index + 1 == w[0].Row.Index && combine(list[list.Count - 1][0], w[0])))
                             {
                                 list.Add(w);
                             }

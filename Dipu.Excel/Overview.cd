@@ -3,14 +3,14 @@
   <Class Name="Dipu.Excel.Style">
     <Position X="15.75" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAIgAAAAAAACAAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>Style.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="Dipu.Excel.IAddIn">
-    <Position X="4.25" Y="1.25" Width="1.5" />
+    <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAIAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
       <FileName>IAddIn.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -18,9 +18,9 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Dipu.Excel.IWorkbook">
-    <Position X="7" Y="1.25" Width="1.5" />
+    <Position X="3.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAACAEAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAEAAACAAAAAAgAAAAAAgAAACAAAA=</HashCode>
       <FileName>IWorkbook.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -28,28 +28,45 @@
     </ShowAsCollectionAssociation>
   </Interface>
   <Interface Name="Dipu.Excel.IWorksheet">
-    <Position X="10" Y="1.25" Width="1.5" />
+    <Position X="6.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAACAAACAQAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAGAFAAAQIAAAAAgAIAAAAAAAIAAA=</HashCode>
       <FileName>IWorksheet.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="this[System.Int32, System.Int32]" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Dipu.Excel.ICell">
-    <Position X="13" Y="1.25" Width="1.5" />
+  <Interface Name="Dipu.Excel.IRow">
+    <Position X="12" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAABAAAABAAAAAgAABAAgAAAAAAA=</HashCode>
-      <FileName>ICell.cs</FileName>
-      <NewMemberFileName>IProgram.cs</NewMemberFileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>IRow.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Dipu.Excel.IProgram">
-    <Position X="1.25" Y="1.25" Width="1.5" />
+    <Position X="0.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAgAAAAAAEIAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAABAAAAAAAAEAEAAgAAAAgAgAACAEIAAAAAAAA=</HashCode>
       <FileName>IProgram.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Dipu.Excel.ICell">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAEAAAAAAAAAABAAAABAAAAAgAABACgAABAAAA=</HashCode>
+      <FileName>ICell.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Column" />
+      <Property Name="Row" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Dipu.Excel.IColumn">
+    <Position X="12" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>IColumn.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

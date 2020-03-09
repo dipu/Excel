@@ -11,7 +11,7 @@
         private readonly IValueConverter defaultValueConverter = new DefaultValueConverter();
         private string comment;
 
-        public Cell(IEmbeddedWorksheet worksheet, int row, int column)
+        public Cell(IEmbeddedWorksheet worksheet, Row row, Column column)
         {
             Worksheet = worksheet;
             Row = row;
@@ -22,13 +22,13 @@
 
         public IEmbeddedWorksheet Worksheet { get; }
 
-        int ICell.Row => this.Row;
+        IRow ICell.Row => this.Row;
 
-        public int Row { get; }
+        public Row Row { get; }
 
-        int ICell.Column => this.Column;
+        IColumn ICell.Column => this.Column;
 
-        public int Column { get; }
+        public Column Column { get; }
 
         object ICell.Value { get => this.Value; set => this.Value = value; }
 
@@ -102,9 +102,6 @@
                 }
             }
         }
-
-
-
 
         public override string ToString()
         {

@@ -23,6 +23,10 @@ namespace Dipu.Excel.Embedded
 
     public class Worksheet : IEmbeddedWorksheet
     {
+        private readonly Dictionary<int, Row> rowByIndex;
+
+        private readonly Dictionary<int, Column> columnByIndex;
+
         private Dictionary<string, Cell> CellByRowColumn { get; }
 
         private HashSet<Cell> DirtyValueCells { get; set; }
@@ -39,6 +43,8 @@ namespace Dipu.Excel.Embedded
         {
             this.Workbook = workbook;
             this.InteropWorksheet = interopWorksheet;
+            this.rowByIndex = new Dictionary<int, Row>();
+            this.columnByIndex = new Dictionary<int, Column>();
             this.CellByRowColumn = new Dictionary<string, Cell>();
             this.DirtyValueCells = new HashSet<Cell>();
             this.DirtyCommentCells = new HashSet<Cell>();
@@ -104,12 +110,48 @@ namespace Dipu.Excel.Embedded
                 var key = $"{row}:{column}";
                 if (!this.CellByRowColumn.TryGetValue(key, out var cell))
                 {
-                    cell = new Cell(this, row, column);
+                    cell = new Cell(this, Row(row), Column(column));
                     this.CellByRowColumn.Add(key, cell);
                 }
 
                 return cell;
             }
+        }
+
+        IRow IWorksheet.Row(int index) => this.Row(index);
+
+        public Row Row(int index)
+        {
+            if (index < 0)
+            {
+                throw new ArgumentException("Index can not be negative", nameof(Row));
+            }
+
+            if (!this.rowByIndex.TryGetValue(index, out var row))
+            {
+                row = new Row(this, index);
+                this.rowByIndex.Add(index, row);
+            }
+
+            return row;
+        }
+
+        IColumn IWorksheet.Column(int index) => this.Column(index);
+
+        public Column Column(int index)
+        {
+            if (index < 0)
+            {
+                throw new ArgumentException(nameof(Column));
+            }
+
+            if (!this.columnByIndex.TryGetValue(index, out var column))
+            {
+                column = new Column(this, index);
+                this.columnByIndex.Add(index, column);
+            }
+
+            return column;
         }
 
         public async Task Flush()
@@ -151,8 +193,8 @@ namespace Dipu.Excel.Embedded
                     var toRow = chunk.Last().Last().Row;
                     var toColumn = chunk.Last().Last().Column;
 
-                    var from = this.InteropWorksheet.Cells[fromRow + 1, fromColumn + 1];
-                    var to = this.InteropWorksheet.Cells[toRow + 1, toColumn + 1];
+                    var from = this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
+                    var to = this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
                     var range = this.InteropWorksheet.Range[from, to];
                     range.Value2 = values;
                 }
@@ -167,7 +209,7 @@ namespace Dipu.Excel.Embedded
         {
             foreach (var cell in cells)
             {
-                var partCell = (Microsoft.Office.Interop.Excel.Range)this.InteropWorksheet.Cells[cell.Row + 1, cell.Column + 1];
+                var partCell = (Microsoft.Office.Interop.Excel.Range)this.InteropWorksheet.Cells[cell.Row.Index + 1, cell.Column.Index + 1];
 
                 if (partCell.Comment == null)
                 {
@@ -189,8 +231,8 @@ namespace Dipu.Excel.Embedded
                 var toRow = chunk.Last().Last().Row;
                 var toColumn = chunk.Last().Last().Column;
 
-                var from = this.InteropWorksheet.Cells[fromRow + 1, fromColumn + 1];
-                var to = this.InteropWorksheet.Cells[toRow + 1, toColumn + 1];
+                var from = this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
+                var to = this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
                 var range = this.InteropWorksheet.Range[from, to];
 
                 var cc = chunk[0][0];
@@ -215,8 +257,8 @@ namespace Dipu.Excel.Embedded
                 var toRow = chunk.Last().Last().Row;
                 var toColumn = chunk.Last().Last().Column;
 
-                var from = this.InteropWorksheet.Cells[fromRow + 1, fromColumn + 1];
-                var to = this.InteropWorksheet.Cells[toRow + 1, toColumn + 1];
+                var from = this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
+                var to = this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
                 var range = this.InteropWorksheet.Range[from, to];
 
                 range.NumberFormat = chunk[0][0].NumberFormat;
@@ -233,8 +275,8 @@ namespace Dipu.Excel.Embedded
                 var toRow = chunk.Last().Last().Row;
                 var toColumn = chunk.Last().Last().Column;
 
-                var from = this.InteropWorksheet.Cells[fromRow + 1, fromColumn + 1];
-                var to = this.InteropWorksheet.Cells[toRow + 1, toColumn + 1];
+                var from = this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
+                var to = this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
                 var range = this.InteropWorksheet.Range[from, to];
 
                 var cc = chunk[0][0];

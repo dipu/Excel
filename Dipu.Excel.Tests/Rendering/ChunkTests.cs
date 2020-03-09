@@ -9,13 +9,39 @@ namespace Dipu.Excel.Tests.Embedded
 {
     public class ChunkTests
     {
+        private readonly Dictionary<int, Row> rowByIndex = new Dictionary<int, Row>();
+
+        private readonly Dictionary<int, Column> columnByIndex = new Dictionary<int, Column>();
+
+        public Row Row(int index)
+        {
+            if (!this.rowByIndex.TryGetValue(index, out var row))
+            {
+                row = new Row(null, index);
+                this.rowByIndex.Add(index, row);
+            }
+
+            return row;
+        }
+
+        public Column Column(int index)
+        {
+            if (!this.columnByIndex.TryGetValue(index, out var column))
+            {
+                column = new Column(null, index);
+                this.columnByIndex.Add(index, column);
+            }
+
+            return column;
+        }
+
         [Fact]
         public void OneChunk_OneRow_TwoCells()
         {
             var cells = new[]
             {
-                new Cell(null, 0, 0),
-                new Cell(null, 0, 1),
+                new Cell(null, Row(0), Column(0)),
+                new Cell(null, Row(0), Column(1)),
             };
 
             var chunks = cells.Chunks((v, w) => true).ToArray();
@@ -30,10 +56,10 @@ namespace Dipu.Excel.Tests.Embedded
         {
             var cells = new[]
                 {
-                    new Cell(null, 0,0),
-                    new Cell(null, 0,1),
-                    new Cell(null, 0,2),
-                    new Cell(null, 0,3),
+                    new Cell(null, Row(0), Column(0)),
+                    new Cell(null, Row(0), Column(1)),
+                    new Cell(null, Row(0), Column(2)),
+                    new Cell(null, Row(0), Column(3)),
             };
 
             var chunks = cells.Chunks((v, w) => true).ToArray();
@@ -45,8 +71,8 @@ namespace Dipu.Excel.Tests.Embedded
         {
             var cells = new[]
                 {
-                    new Cell(null, 0,0),
-                    new Cell(null, 1,0),
+                    new Cell(null, Row(0), Column(0)),
+                    new Cell(null, Row(1), Column(0)),
             };
 
             var chunks = cells.Chunks((v, w) => true).ToArray();
@@ -59,10 +85,10 @@ namespace Dipu.Excel.Tests.Embedded
         {
             var cells = new[]
                 {
-                    new Cell(null, 0,0),
-                    new Cell(null,0,1),
-                    new Cell(null,1,0),
-                    new Cell(null,1,1),
+                    new Cell(null, Row(0), Column(0)),
+                    new Cell(null, Row(0), Column(1)),
+                    new Cell(null, Row(1), Column(0)),
+                    new Cell(null, Row(1), Column(1)),
             };
 
             var chunks = cells.Chunks((v, w) => true).ToArray();
@@ -75,10 +101,10 @@ namespace Dipu.Excel.Tests.Embedded
         {
             var cells = new[]
                 {
-                    new Cell(null, 0,0),
-                    new Cell(null, 0,1),
-                    new Cell(null, 0,3),
-                    new Cell(null,0,4),
+                    new Cell(null, Row(0), Column(0)),
+                    new Cell(null, Row(0), Column(1)),
+                    new Cell(null, Row(0), Column(3)),
+                    new Cell(null, Row(0), Column(4)),
             };
 
             var chunks = cells.Chunks((v, w) => true).ToArray();
@@ -194,7 +220,7 @@ namespace Dipu.Excel.Tests.Embedded
             Assert.Equal(3, chunks.Length);
         }
 
-        private static IList<Cell> CellsFromRaster(IEmbeddedWorksheet worksheet, string[] raster, Action<ICell, string> setup)
+        private IList<Cell> CellsFromRaster(IEmbeddedWorksheet worksheet, string[] raster, Action<ICell, string> setup)
         {
             var cells = new List<Cell>();
             for (var i = 0; i < raster.Length; i++)
@@ -202,7 +228,7 @@ namespace Dipu.Excel.Tests.Embedded
                 var line = raster[i];
                 for (var j = 0; j < 3; j++)
                 {
-                    var cell = new Cell(worksheet, i, j);
+                    var cell = new Cell(worksheet, Row(i), Column(j));
                     setup(cell, line[j].ToString());
                     cells.Add(cell);
                 }

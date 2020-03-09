@@ -15,6 +15,10 @@ namespace Dipu.Excel
 
         bool IsActive { get; }
 
+        IRow Row(int index);
+
+        IColumn Column(int index);
+
         ICell this[int row, int column]
         {
             get;

@@ -4,7 +4,7 @@ namespace Dipu.Excel.Headless
 {
     public class Cell : ICell
     {
-        public Cell(Worksheet worksheet, int row, int column)
+        public Cell(Worksheet worksheet, Row row, Column column)
         {
             Worksheet = worksheet;
             Row = row;
@@ -13,9 +13,13 @@ namespace Dipu.Excel.Headless
 
         public IWorksheet Worksheet { get; }
 
-        public int Row { get; }
-        
-        public int Column { get; }
+        IRow ICell.Row => this.Row;
+
+        public Row Row { get; }
+
+        IColumn ICell.Column => this.Column;
+               
+        public Column Column { get; }
         
         public object Value { get; set; }
         

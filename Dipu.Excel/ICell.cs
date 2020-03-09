@@ -4,9 +4,9 @@
     {
         IWorksheet Worksheet { get; }
 
-        int Row { get; }
+        IRow Row { get; }
 
-        int Column { get; }
+        IColumn Column { get; }
                 
         object Value { get; set; }
 
