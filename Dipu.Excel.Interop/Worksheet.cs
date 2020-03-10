@@ -305,17 +305,24 @@ namespace Dipu.Excel.Embedded
 
                     try
                     {
-                        range.Select();
                         range.Validation.Delete();
                     }
                     catch (Exception)
                     {
                     }
+
                     range.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop, Type.Missing, $"={validationRange}", Type.Missing);
+                    range.Validation.IgnoreBlank = !cc.IsRequired;
                 }
                 else
                 {
-                    range.Validation.Delete();
+                    try
+                    {
+                        range.Validation.Delete();
+                    }
+                    catch (Exception)
+                    {
+                    }
                 }
             }
         }

@@ -12,6 +12,8 @@
 
         Range Options { get; set; }
 
+        bool IsRequired { get; set; }
+
         string Comment { get; set; }
 
         Style Style { get; set; }

@@ -103,6 +103,8 @@
             }
         }
 
+        public bool IsRequired { get; set; }
+
         public override string ToString()
         {
             return $"{Row}:{Column}";
