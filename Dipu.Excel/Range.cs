@@ -13,9 +13,9 @@ namespace Dipu.Excel
             this.Worksheet = worksheet;
             this.Name = name;
 
-            if (this.Columns == null && this.Rows == null)
+            if (this.Columns == null && this.Rows == null && string.IsNullOrEmpty(this.Name))
             {
-                throw new ArgumentException("Either Columns or Rows is required.");
+                throw new ArgumentException("Either Columns or Rows, or Name is required.");
             }
         }
 
