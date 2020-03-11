@@ -313,6 +313,7 @@ namespace Dipu.Excel.Embedded
 
                     range.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop, Type.Missing, $"={validationRange}", Type.Missing);
                     range.Validation.IgnoreBlank = !cc.IsRequired;
+                    range.Validation.InCellDropdown = !cc.HideInCellDropdown;
                 }
                 else
                 {

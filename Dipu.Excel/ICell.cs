@@ -7,12 +7,14 @@
         IRow Row { get; }
 
         IColumn Column { get; }
-                
+
         object Value { get; set; }
 
         Range Options { get; set; }
 
         bool IsRequired { get; set; }
+
+        bool HideInCellDropdown { get; set; }
 
         string Comment { get; set; }
 

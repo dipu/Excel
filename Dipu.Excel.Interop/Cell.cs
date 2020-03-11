@@ -105,6 +105,8 @@
 
         public bool IsRequired { get; set; }
 
+        public bool HideInCellDropdown { get; set; }
+
         public override string ToString()
         {
             return $"{Row}:{Column}";
