@@ -35,6 +35,8 @@ namespace Dipu.Excel.Headless
 
         public bool IsRequired { get; set; }
 
+        public bool HideInCellDropdown { get; set; }
+
         public void Clear()
         {
             this.Value = string.Empty;
