@@ -221,11 +221,13 @@ namespace Dipu.Excel.Embedded
 
                 if (partCell.Comment == null)
                 {
-                    partCell.AddComment();
-                    partCell.Comment.Shape.TextFrame.AutoSize = true;
+                    var comment = partCell.AddComment(cell.Comment);
+                    comment.Shape.TextFrame.AutoSize = true;
                 }
-
-                partCell.Comment.Text(cell.Comment);
+                else
+                {
+                    partCell.Comment.Text(cell.Comment);
+                }
             }
         }
 
