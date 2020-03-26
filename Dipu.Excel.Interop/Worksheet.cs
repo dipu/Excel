@@ -11,6 +11,7 @@ namespace Dipu.Excel.Embedded
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.Office.Interop.Excel;
+    using Polly;
     using InteropWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
 
     public interface IEmbeddedWorksheet : IWorksheet
@@ -257,10 +258,17 @@ namespace Dipu.Excel.Embedded
                     var toRow = chunk.Last().Last().Row;
                     var toColumn = chunk.Last().Last().Column;
 
-                    var from = this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
-                    var to = this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
-                    var range = this.InteropWorksheet.Range[from, to];
-                    range.Value2 = values;
+                    var range = this.WaitAndRetry(() =>
+                    {
+                        var from = (Range)this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
+                        var to = (Range)this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
+                        return this.InteropWorksheet.Range[from, to];
+                    });
+
+                    this.WaitAndRetry(() =>
+                    {
+                        range.Value2 = values;
+                    });
                 });
         }
 
@@ -270,17 +278,23 @@ namespace Dipu.Excel.Embedded
                 cells,
                 cell =>
                 {
-                    var partCell = (Range)this.InteropWorksheet.Cells[cell.Row.Index + 1, cell.Column.Index + 1];
+                    var range = this.WaitAndRetry(() =>
+                    {
+                        return (Range)this.InteropWorksheet.Cells[cell.Row.Index + 1, cell.Column.Index + 1];
+                    });
 
-                    if (partCell.Comment == null)
+                    this.WaitAndRetry(() =>
                     {
-                        var comment = partCell.AddComment(cell.Comment);
-                        comment.Shape.TextFrame.AutoSize = true;
-                    }
-                    else
-                    {
-                        partCell.Comment.Text(cell.Comment);
-                    }
+                        if (range.Comment == null)
+                        {
+                            var comment = range.AddComment(cell.Comment);
+                            comment.Shape.TextFrame.AutoSize = true;
+                        }
+                        else
+                        {
+                            range.Comment.Text(cell.Comment);
+                        }
+                    });
                 });
         }
 
@@ -298,19 +312,25 @@ namespace Dipu.Excel.Embedded
                     var toRow = chunk.Last().Last().Row;
                     var toColumn = chunk.Last().Last().Column;
 
-                    var from = this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
-                    var to = this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
-                    var range = this.InteropWorksheet.Range[from, to];
+                    var range = this.WaitAndRetry(() =>
+                    {
+                        var from = this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
+                        var to = this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
+                        return this.InteropWorksheet.Range[from, to];
+                    });
 
-                    var cc = chunk[0][0];
-                    if (cc.Style != null)
+                    this.WaitAndRetry(() =>
                     {
-                        range.Interior.Color = ColorTranslator.ToOle(chunk[0][0].Style.BackgroundColor);
-                    }
-                    else
-                    {
-                        range.Interior.ColorIndex = XlColorIndex.xlColorIndexAutomatic;
-                    }
+                        var cc = chunk[0][0];
+                        if (cc.Style != null)
+                        {
+                            range.Interior.Color = ColorTranslator.ToOle(chunk[0][0].Style.BackgroundColor);
+                        }
+                        else
+                        {
+                            range.Interior.ColorIndex = XlColorIndex.xlColorIndexAutomatic;
+                        }
+                    });
                 });
         }
 
@@ -328,11 +348,17 @@ namespace Dipu.Excel.Embedded
                     var toRow = chunk.Last().Last().Row;
                     var toColumn = chunk.Last().Last().Column;
 
-                    var from = this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
-                    var to = this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
-                    var range = this.InteropWorksheet.Range[from, to];
+                    var range = this.WaitAndRetry(() =>
+                    {
+                        var from = this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
+                        var to = this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
+                        return this.InteropWorksheet.Range[from, to];
+                    });
 
-                    range.NumberFormat = chunk[0][0].NumberFormat;
+                    this.WaitAndRetry(() =>
+                    {
+                        range.NumberFormat = chunk[0][0].NumberFormat;
+                    });
                 });
         }
 
@@ -350,48 +376,54 @@ namespace Dipu.Excel.Embedded
                     var toRow = chunk.Last().Last().Row;
                     var toColumn = chunk.Last().Last().Column;
 
-                    var from = this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
-                    var to = this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
-                    var range = this.InteropWorksheet.Range[from, to];
-
-                    var cc = chunk[0][0];
-                    if (cc.Options != null)
+                    var range = this.WaitAndRetry(() =>
                     {
-                        var validationRange = cc.Options.Name;
-                        if (string.IsNullOrEmpty(validationRange))
-                        {
-                            if (cc.Options.Columns.HasValue)
-                            {
-                                validationRange = $"{cc.Options.Worksheet.Name}!${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + 1}:${ExcelColumnFromNumber(cc.Options.Column + cc.Options.Columns.Value)}${cc.Options.Row + 1}";
-                            }
-                            else if (cc.Options.Rows.HasValue)
-                            {
-                                validationRange = $"{cc.Options.Worksheet.Name}!${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + 1}:${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + cc.Options.Rows}";
-                            }
-                        }
+                        var from = this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
+                        var to = this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
+                        return this.InteropWorksheet.Range[from, to];
+                    });
 
-                        try
-                        {
-                            range.Validation.Delete();
-                        }
-                        catch (Exception)
-                        {
-                        }
-
-                        range.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop, Type.Missing, $"={validationRange}", Type.Missing);
-                        range.Validation.IgnoreBlank = !cc.IsRequired;
-                        range.Validation.InCellDropdown = !cc.HideInCellDropdown;
-                    }
-                    else
+                    this.WaitAndRetry(() =>
                     {
-                        try
+                        var cc = chunk[0][0];
+                        if (cc.Options != null)
                         {
-                            range.Validation.Delete();
+                            var validationRange = cc.Options.Name;
+                            if (string.IsNullOrEmpty(validationRange))
+                            {
+                                if (cc.Options.Columns.HasValue)
+                                {
+                                    validationRange = $"{cc.Options.Worksheet.Name}!${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + 1}:${ExcelColumnFromNumber(cc.Options.Column + cc.Options.Columns.Value)}${cc.Options.Row + 1}";
+                                }
+                                else if (cc.Options.Rows.HasValue)
+                                {
+                                    validationRange = $"{cc.Options.Worksheet.Name}!${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + 1}:${ExcelColumnFromNumber(cc.Options.Column + 1)}${cc.Options.Row + cc.Options.Rows}";
+                                }
+                            }
+
+                            try
+                            {
+                                range.Validation.Delete();
+                            }
+                            catch (Exception)
+                            {
+                            }
+
+                            range.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop, Type.Missing, $"={validationRange}", Type.Missing);
+                            range.Validation.IgnoreBlank = !cc.IsRequired;
+                            range.Validation.InCellDropdown = !cc.HideInCellDropdown;
                         }
-                        catch (Exception)
+                        else
                         {
+                            try
+                            {
+                                range.Validation.Delete();
+                            }
+                            catch (Exception)
+                            {
+                            }
                         }
-                    }
+                    });
                 });
         }
 
@@ -428,9 +460,54 @@ namespace Dipu.Excel.Embedded
                     string from = $"$A${fromChunk.Index + 1}";
                     string to = $"$A${toChunk.Index + 1}";
 
-                    var range = this.InteropWorksheet.Range[from, to];
-                    range.EntireRow.Hidden = hidden;
+                    var range = this.WaitAndRetry(() =>
+                    {
+                        return this.InteropWorksheet.Range[from, to];
+                    });
+
+                    this.WaitAndRetry(() =>
+                    {
+                        range.EntireRow.Hidden = hidden;
+                    });
                 });
+        }
+
+        private void WaitAndRetry(System.Action method, int maxRetries = 10)
+        {
+            Policy
+            .Handle<System.Runtime.InteropServices.COMException>()
+            .WaitAndRetry(
+                maxRetries,
+                (retryCount) =>
+                {
+                    if (retryCount > 1)
+                    {
+                        Console.WriteLine($"Retrying {nameof(method)} for {retryCount} times");
+                    }
+
+                    // returns the waitTime for the onRetry
+                    return TimeSpan.FromMilliseconds(100.0D * retryCount);
+                })
+                .Execute(method);
+        }
+
+        private T WaitAndRetry<T>(Func<T> method, int maxRetries = 10)
+        {
+            return Policy
+             .Handle<System.Runtime.InteropServices.COMException>()
+             .WaitAndRetry(
+                 maxRetries,
+                 (retryCount) =>
+                 {
+                     if (retryCount > 1)
+                     {
+                         Console.WriteLine($"Retrying {nameof(method)} for {retryCount} times");
+                     }
+
+                     // returns the waitTime for the onRetry
+                     return TimeSpan.FromMilliseconds(100.0D * retryCount);
+                 })
+             .Execute(method);
         }
     }
 }
