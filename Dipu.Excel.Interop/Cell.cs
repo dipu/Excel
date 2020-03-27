@@ -4,6 +4,7 @@
     {
         private object value;
         private Style style;
+        private string formula;
         private string numberFormat;
         private Range options;
 
@@ -32,6 +33,8 @@
 
         object ICell.Value { get => this.Value; set => this.Value = value; }
 
+        string ICell.Formula { get => this.Formula; set => this.Formula = value; }
+
         public object Value
         {
             get => this.value;
@@ -45,6 +48,19 @@
             }
         }
 
+        public string Formula
+        {
+            get => this.formula;
+            set
+            {
+                if (!Equals(this.formula, value))
+                {
+                    this.Worksheet.AddDirtyFormula(this);
+                    this.formula = value;
+                }
+            }
+        }
+
         public string Comment
         {
             get => comment;
@@ -52,8 +68,9 @@
             {
                 if (!Equals(this.comment, value))
                 {
-                    this.comment = value;
                     this.Worksheet.AddDirtyComment(this);
+                    this.comment = value;
+
                 }
             }
         }
@@ -65,8 +82,8 @@
             {
                 if (!this.style?.Equals(value) ?? value != null)
                 {
-                    this.style = value;
                     this.Worksheet.AddDirtyStyle(this);
+                    this.style = value;
                 }
             }
         }
@@ -78,8 +95,8 @@
             {
                 if (!Equals(this.numberFormat, value))
                 {
-                    this.numberFormat = value;
                     this.Worksheet.AddDirtyNumberFormat(this);
+                    this.numberFormat = value;
                 }
             }
         }
@@ -97,8 +114,8 @@
             {
                 if (!Equals(this.options, value))
                 {
-                    this.options = value;
                     this.Worksheet.AddDirtyOptions(this);
+                    this.options = value;
                 }
             }
         }
@@ -128,6 +145,7 @@
         public void Clear()
         {
             this.Value = string.Empty;
+            this.Formula = string.Empty;
             this.Style = null;
             this.NumberFormat = null;
         }

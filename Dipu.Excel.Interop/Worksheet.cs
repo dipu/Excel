@@ -18,6 +18,9 @@ namespace Dipu.Excel.Embedded
     {
         void AddDirtyValue(Cell cell);
 
+        void AddDirtyFormula(Cell cell);
+
+
         void AddDirtyComment(Cell cell);
 
         void AddDirtyStyle(Cell cell);
@@ -47,6 +50,7 @@ namespace Dipu.Excel.Embedded
             this.DirtyStyleCells = new HashSet<Cell>();
             this.DirtyOptionCells = new HashSet<Cell>();
             this.DirtyNumberFormatCells = new HashSet<Cell>();
+            this.DirtyFormulaCells = new HashSet<Cell>();
             this.DirtyRows = new HashSet<Row>();
 
             interopWorksheet.Change += this.InteropWorksheet_Change;
@@ -87,6 +91,8 @@ namespace Dipu.Excel.Embedded
         private HashSet<Cell> DirtyOptionCells { get; set; }
 
         private HashSet<Cell> DirtyNumberFormatCells { get; set; }
+
+        private HashSet<Cell> DirtyFormulaCells { get; set; }
 
         private HashSet<Row> DirtyRows { get; set; }
 
@@ -164,6 +170,9 @@ namespace Dipu.Excel.Embedded
             this.RenderValue(this.DirtyValueCells);
             this.DirtyValueCells = new HashSet<Cell>();
 
+            this.RenderFormula(this.DirtyFormulaCells);
+            this.DirtyFormulaCells = new HashSet<Cell>();
+
             this.RenderComments(this.DirtyCommentCells);
             this.DirtyCommentCells = new HashSet<Cell>();
 
@@ -187,6 +196,11 @@ namespace Dipu.Excel.Embedded
         public void AddDirtyValue(Cell cell)
         {
             this.DirtyValueCells.Add(cell);
+        }
+
+        public void AddDirtyFormula(Cell cell)
+        {
+            this.DirtyFormulaCells.Add(cell);
         }
 
         public void AddDirtyComment(Cell cell)
@@ -268,6 +282,43 @@ namespace Dipu.Excel.Embedded
                     this.WaitAndRetry(() =>
                     {
                         range.Value2 = values;
+                    });
+                });
+        }
+
+        private void RenderFormula(IEnumerable<Cell> cells)
+        {
+            var chunks = cells.Chunks((v, w) => true);
+
+            Parallel.ForEach(
+                chunks,
+                chunk =>
+                {
+                    var formulas = new object[chunk.Count, chunk[0].Count];
+                    for (var i = 0; i < chunk.Count; i++)
+                    {
+                        for (var j = 0; j < chunk[0].Count; j++)
+                        {
+                            formulas[i, j] = chunk[i][j].Formula;
+                        }
+                    }
+
+                    var fromRow = chunk.First().First().Row;
+                    var fromColumn = chunk.First().First().Column;
+
+                    var toRow = chunk.Last().Last().Row;
+                    var toColumn = chunk.Last().Last().Column;
+
+                    var range = this.WaitAndRetry(() =>
+                    {
+                        var from = (Range)this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
+                        var to = (Range)this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
+                        return this.InteropWorksheet.Range[from, to];
+                    });
+
+                    this.WaitAndRetry(() =>
+                    {
+                        range.Formula = formulas;
                     });
                 });
         }
@@ -472,7 +523,7 @@ namespace Dipu.Excel.Embedded
                 });
         }
 
-        private void WaitAndRetry(System.Action method, int maxRetries = 10)
+        private void WaitAndRetry(System.Action method, int waitTime = 100, int maxRetries = 10)
         {
             Policy
             .Handle<System.Runtime.InteropServices.COMException>()
@@ -480,18 +531,13 @@ namespace Dipu.Excel.Embedded
                 maxRetries,
                 (retryCount) =>
                 {
-                    if (retryCount > 1)
-                    {
-                        Console.WriteLine($"Retrying {nameof(method)} for {retryCount} times");
-                    }
-
                     // returns the waitTime for the onRetry
-                    return TimeSpan.FromMilliseconds(100.0D * retryCount);
+                    return TimeSpan.FromMilliseconds(waitTime * retryCount);
                 })
                 .Execute(method);
         }
 
-        private T WaitAndRetry<T>(Func<T> method, int maxRetries = 10)
+        private T WaitAndRetry<T>(System.Func<T> method, int waitTime = 100, int maxRetries = 10)
         {
             return Policy
              .Handle<System.Runtime.InteropServices.COMException>()
@@ -499,13 +545,8 @@ namespace Dipu.Excel.Embedded
                  maxRetries,
                  (retryCount) =>
                  {
-                     if (retryCount > 1)
-                     {
-                         Console.WriteLine($"Retrying {nameof(method)} for {retryCount} times");
-                     }
-
                      // returns the waitTime for the onRetry
-                     return TimeSpan.FromMilliseconds(100.0D * retryCount);
+                     return TimeSpan.FromMilliseconds(waitTime * retryCount);
                  })
              .Execute(method);
         }

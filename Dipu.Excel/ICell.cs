@@ -10,6 +10,8 @@
 
         object Value { get; set; }
 
+        string Formula { get; set; }
+
         Range Options { get; set; }
 
         bool IsRequired { get; set; }

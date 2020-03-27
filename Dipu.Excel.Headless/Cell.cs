@@ -37,6 +37,8 @@ namespace Dipu.Excel.Headless
 
         public bool HideInCellDropdown { get; set; }
 
+        public string Formula { get; set; }
+
         public void Clear()
         {
             this.Value = string.Empty;
