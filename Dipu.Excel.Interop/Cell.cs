@@ -2,6 +2,9 @@
 {
     public class Cell : ICell
     {
+        // the state of this when it is created
+        private bool touched = false;
+
         private object value;
         private Style style;
         private string formula;
@@ -40,10 +43,12 @@
             get => this.value;
             set
             {
-                if (!Equals(this.value, value))
+                // When we init the value with Null, we still want to be involved!
+                if (!this.touched || !Equals(this.value, value))
                 {
                     this.Worksheet.AddDirtyValue(this);
                     this.value = value;
+                    this.touched = true;
                 }
             }
         }
@@ -53,10 +58,11 @@
             get => this.formula;
             set
             {
-                if (!Equals(this.formula, value))
+                if (!this.touched || !Equals(this.formula, value))
                 {
                     this.Worksheet.AddDirtyFormula(this);
                     this.formula = value;
+                    this.touched = true;
                 }
             }
         }
@@ -69,7 +75,7 @@
                 if (!Equals(this.comment, value))
                 {
                     this.Worksheet.AddDirtyComment(this);
-                    this.comment = value;
+                    this.comment = value;                
 
                 }
             }
