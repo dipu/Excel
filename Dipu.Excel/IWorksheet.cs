@@ -25,5 +25,7 @@ namespace Dipu.Excel
         }
 
         Task Flush();
+
+        Task RefreshPivotTables(string newRange);
     }
 }

@@ -82,9 +82,10 @@ namespace Dipu.Excel.Headless
 
             return column;
         }
-        
+
         public async Task Flush()
         {
+            await Task.CompletedTask;
         }
 
         public void Activate()
@@ -95,6 +96,11 @@ namespace Dipu.Excel.Headless
             }
 
             this.IsActive = true;
+        }
+
+        public async Task RefreshPivotTables(string newRange)
+        {
+            await Task.CompletedTask;
         }
     }
 }

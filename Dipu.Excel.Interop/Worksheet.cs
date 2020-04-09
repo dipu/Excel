@@ -20,7 +20,6 @@ namespace Dipu.Excel.Embedded
 
         void AddDirtyFormula(Cell cell);
 
-
         void AddDirtyComment(Cell cell);
 
         void AddDirtyStyle(Cell cell);
@@ -95,6 +94,23 @@ namespace Dipu.Excel.Embedded
         private HashSet<Cell> DirtyFormulaCells { get; set; }
 
         private HashSet<Row> DirtyRows { get; set; }
+
+        public async Task RefreshPivotTables(string sourceDataRange = null)
+        {
+            var pivotTables = (PivotTables)this.InteropWorksheet.PivotTables();
+
+            foreach (PivotTable pivotTable in pivotTables)
+            {
+                if (!string.IsNullOrWhiteSpace(sourceDataRange))
+                {
+                    pivotTable.SourceData = sourceDataRange;
+                }
+
+                pivotTable.RefreshTable();
+            }
+
+            await Task.CompletedTask;
+        }
 
         public ICell this[int row, int column]
         {
