@@ -12,6 +12,8 @@ namespace Dipu.Excel
 
         IWorksheet AddWorksheet(int? index = null, IWorksheet before = null, IWorksheet after = null);
 
+        IWorksheet Copy(IWorksheet source, IWorksheet beforeWorksheet);
+
         Range[] GetNamedRanges();
     }
 }

@@ -10,6 +10,7 @@ namespace Dipu.Excel.Embedded
     using System.Drawing;
     using System.Linq;
     using System.Threading.Tasks;
+    using Dipu.Excel;
     using Microsoft.Office.Interop.Excel;
     using Polly;
     using InteropWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
@@ -36,6 +37,7 @@ namespace Dipu.Excel.Embedded
         private readonly Dictionary<int, Row> rowByIndex;
 
         private readonly Dictionary<int, Column> columnByIndex;
+        private bool isActive;
 
         public Worksheet(Workbook workbook, InteropWorksheet interopWorksheet)
         {
@@ -56,11 +58,11 @@ namespace Dipu.Excel.Embedded
 
             ((DocEvents_Event)interopWorksheet).Activate += () =>
             {
-                this.IsActive = true;
+                this.isActive = true;
                 this.SheetActivated?.Invoke(this, this.Name);
             };
 
-            ((DocEvents_Event)interopWorksheet).Deactivate += () => this.IsActive = false;
+            ((DocEvents_Event)interopWorksheet).Deactivate += () => this.isActive = false;
         }
 
         public event EventHandler<CellChangedEvent> CellsChanged;
@@ -69,7 +71,21 @@ namespace Dipu.Excel.Embedded
 
         public int Index => this.InteropWorksheet.Index;
 
-        public bool IsActive { get; private set; }
+        public bool IsActive
+        {
+            get => this.isActive;
+            set
+            {
+                if (value)
+                {
+                    this.InteropWorksheet.Activate();
+                }
+                else
+                {
+                    this.isActive = false;
+                }
+            }
+        }
 
         public Workbook Workbook { get; set; }
 
@@ -239,7 +255,7 @@ namespace Dipu.Excel.Embedded
             this.DirtyRows.Add(row);
         }
 
-        private void InteropWorksheet_Change(Range target)
+        private void InteropWorksheet_Change(Microsoft.Office.Interop.Excel.Range target)
         {
             List<Cell> cells = null;
             foreach (Microsoft.Office.Interop.Excel.Range targetCell in target.Cells)
@@ -290,8 +306,8 @@ namespace Dipu.Excel.Embedded
 
                     var range = this.WaitAndRetry(() =>
                     {
-                        var from = (Range)this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
-                        var to = (Range)this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
+                        var from = (Microsoft.Office.Interop.Excel.Range)this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
+                        var to = (Microsoft.Office.Interop.Excel.Range)this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
                         return this.InteropWorksheet.Range[from, to];
                     });
 
@@ -327,8 +343,8 @@ namespace Dipu.Excel.Embedded
 
                     var range = this.WaitAndRetry(() =>
                     {
-                        var from = (Range)this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
-                        var to = (Range)this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
+                        var from = (Microsoft.Office.Interop.Excel.Range)this.InteropWorksheet.Cells[fromRow.Index + 1, fromColumn.Index + 1];
+                        var to = (Microsoft.Office.Interop.Excel.Range)this.InteropWorksheet.Cells[toRow.Index + 1, toColumn.Index + 1];
                         return this.InteropWorksheet.Range[from, to];
                     });
 
@@ -347,7 +363,7 @@ namespace Dipu.Excel.Embedded
                 {
                     var range = this.WaitAndRetry(() =>
                     {
-                        return (Range)this.InteropWorksheet.Cells[cell.Row.Index + 1, cell.Column.Index + 1];
+                        return (Microsoft.Office.Interop.Excel.Range)this.InteropWorksheet.Cells[cell.Row.Index + 1, cell.Column.Index + 1];
                     });
 
                     this.WaitAndRetry(() =>
@@ -566,5 +582,7 @@ namespace Dipu.Excel.Embedded
                  })
              .Execute(method);
         }
+
+
     }
 }

@@ -90,6 +90,22 @@ namespace Dipu.Excel.Embedded
             return this.worksheetByInteropWorksheet[interopWorksheet];
         }
 
+        public IWorksheet Copy(IWorksheet sourceWorksheet, IWorksheet beforeWorksheet)
+        {
+            var source = (Worksheet)sourceWorksheet;
+            var before = (Worksheet)beforeWorksheet;
+            var index = before.InteropWorksheet.Index;
+
+            source.InteropWorksheet.Copy(before.InteropWorksheet);
+
+            var copied = (InteropWorksheet)this.InteropWorkbook.Sheets[index];
+            var copiedWorksheet = this.New(copied);
+
+            copied.Visible = Microsoft.Office.Interop.Excel.XlSheetVisibility.xlSheetVisible;
+
+            return copiedWorksheet;
+        }
+
         public IWorksheet[] Worksheets => this.worksheetByInteropWorksheet.Values.Cast<IWorksheet>().ToArray();
 
         public bool IsActive { get; internal set; }
